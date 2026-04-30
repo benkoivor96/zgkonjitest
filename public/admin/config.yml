@@ -6,8 +6,7 @@ backend:
   name: github
   repo: benkoivor96/zgkonjitest
   branch: main
-  base_url: https://phenomenal-kleicha-69acf4.netlify.app
-  site_domain: phenomenal-kleicha-69acf4.netlify.app
+  base_url: https://zgkonjitest.pages.dev
 
 # Gdje se uploadane slike spremaju
 media_folder: "public/images/uploads"
