@@ -6,7 +6,7 @@ backend:
   name: github
   repo: benkoivor96/zgkonjitest    # ← PROMIJENI OVO (npr. ivanhorvat/zgkonji)
   branch: main
-  base_url: https://decap-oauth.netlify.app  # besplatni OAuth proxy
+  base_url: https://phenomenal-kleicha-69acf4.netlify.app/  # besplatni OAuth proxy
 
 # Gdje se uploadane slike spremaju
 media_folder: "public/images/uploads"
