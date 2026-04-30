@@ -4,9 +4,10 @@
 
 backend:
   name: github
-  repo: benkoivor96/zgkonjitest    # ← PROMIJENI OVO (npr. ivanhorvat/zgkonji)
+  repo: benkoivor96/zgkonjitest
   branch: main
-  base_url: https://phenomenal-kleicha-69acf4.netlify.app/  # besplatni OAuth proxy
+  base_url: https://phenomenal-kleicha-69acf4.netlify.app
+  site_domain: phenomenal-kleicha-69acf4.netlify.app
 
 # Gdje se uploadane slike spremaju
 media_folder: "public/images/uploads"
