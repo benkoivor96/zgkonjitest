@@ -4,7 +4,7 @@
 
 backend:
   name: github
-  repo: TVOJ-USERNAME/TVOJ-REPO    # ← PROMIJENI OVO (npr. ivanhorvat/zgkonji)
+  repo: benkoivor96/zgkonjitest    # ← PROMIJENI OVO (npr. ivanhorvat/zgkonji)
   branch: main
   base_url: https://decap-oauth.netlify.app  # besplatni OAuth proxy
 
