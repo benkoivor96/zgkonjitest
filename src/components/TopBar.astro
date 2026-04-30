@@ -1,0 +1,24 @@
+---
+/* TopBar.astro — gornja traka s novostima
+   Promijeni OVDJE → promjena na SVIM stranicama */
+---
+<div class="top-bar">
+  <span class="top-bar-label">Novosti:</span>
+  <a href="#">FEI World Cup Zagreb — 11.-14. lipnja 2026.</a>
+  <span class="top-bar-sep">|</span>
+  <a href="#">2. kolo Nexe Zagrebačke lige i Batida Grand Prix</a>
+</div>
+
+<style>
+  .top-bar {
+    background: var(--blue); padding: 0.45rem 2rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.8rem; color: rgba(255,255,255,0.9);
+    overflow: hidden; white-space: nowrap;
+  }
+  .top-bar-label { font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0; font-size: 0.72rem; }
+  .top-bar a { color: #fff; text-decoration: none; }
+  .top-bar a:hover { opacity: 0.8; text-decoration: underline; }
+  .top-bar-sep { color: rgba(255,255,255,0.3); flex-shrink: 0; }
+  @media (max-width: 640px) { .top-bar { padding: 0.4rem 1rem; font-size: 0.72rem; } }
+</style>

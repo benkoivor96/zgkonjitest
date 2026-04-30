@@ -1,0 +1,91 @@
+---
+/*
+  [...slug].astro — Pojedinačna vijest
+  Automatski generira stranicu za svaku vijest iz CMS-a.
+*/
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const vijesti = await getCollection('vijesti');
+  return vijesti.map(vijest => ({
+    params: { slug: vijest.id },
+    props: { vijest },
+  }));
+}
+
+const { vijest } = Astro.props;
+const { Content } = await render(vijest);
+
+const months = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja','srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+const d = new Date(vijest.data.date);
+const dateStr = `${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}.`;
+
+const categoryLabels: Record<string, string> = { najave: 'Najave', vijesti: 'Vijesti', rezultati: 'Rezultati' };
+const disciplineLabels: Record<string, string> = { preponsko: 'Preponsko jahanje', dresurno: 'Dresurno jahanje', daljinsko: 'Daljinsko jahanje' };
+---
+<BaseLayout title={vijest.data.title}>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <a href="/#vijesti">Vijesti</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Vijest</span>
+      </div>
+      <h1>{vijest.data.title}</h1>
+    </div>
+  </section>
+
+  <article class="article-section">
+    <div class="article-inner">
+      <div class="article-meta">
+        <span class="article-date">{dateStr}</span>
+        {vijest.data.category && <span class="article-tag">{categoryLabels[vijest.data.category]}</span>}
+        {vijest.data.discipline && <span class="article-tag">{disciplineLabels[vijest.data.discipline]}</span>}
+      </div>
+
+      {vijest.data.image && (
+        <div class="article-image">
+          <img src={vijest.data.image} alt={vijest.data.title} />
+        </div>
+      )}
+
+      <div class="article-content">
+        <Content />
+      </div>
+
+      <div class="article-back">
+        <a href="/#vijesti" class="btn-back">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+          Povratak na vijesti
+        </a>
+      </div>
+    </div>
+  </article>
+
+</BaseLayout>
+
+<style>
+  .article-section { padding: 3rem 2rem 5rem; }
+  .article-inner { max-width: 760px; margin: 0 auto; }
+  .article-meta { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .article-date { font-size: 0.85rem; color: var(--gray-500); font-weight: 500; }
+  .article-tag { font-size: 0.65rem; font-weight: 700; color: var(--blue); background: var(--blue-pale); padding: 0.25rem 0.6rem; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .article-image { border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+  .article-image img { width: 100%; height: auto; display: block; }
+  .article-content { font-size: 1.05rem; line-height: 1.85; color: var(--gray-700); }
+  .article-content h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--gray-800); margin: 2rem 0 0.8rem; }
+  .article-content h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; color: var(--gray-800); margin: 1.5rem 0 0.6rem; }
+  .article-content p { margin-bottom: 1.2rem; }
+  .article-content ul, .article-content ol { margin: 1rem 0 1.2rem 1.5rem; }
+  .article-content li { margin-bottom: 0.4rem; }
+  .article-content strong { color: var(--gray-800); }
+  .article-content a { color: var(--blue); text-decoration: underline; }
+  .article-back { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--gray-200); }
+  .btn-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--blue); font-weight: 600; font-size: 0.88rem; text-decoration: none; transition: gap 0.3s; }
+  .btn-back:hover { gap: 0.8rem; }
+</style>

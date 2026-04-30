@@ -1,0 +1,147 @@
+# ══════════════════════════════════════════════
+# Decap CMS konfiguracija za ZKS
+# ══════════════════════════════════════════════
+
+backend:
+  name: github
+  repo: benkoivor96/zgkonjitest
+  branch: main
+  base_url: https://zgkonjitest.pages.dev
+
+# Gdje se uploadane slike spremaju
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Hrvatski jezik za admin panel
+locale: "hr"
+
+# ══════════════════════════════════════════════
+# KOLEKCIJE — što klijent može uređivati
+# ══════════════════════════════════════════════
+
+collections:
+
+  # ─── VIJESTI ───
+  # Klijent klikne "Nova vijest" → upiše naslov, tekst, sliku
+  # Sprema se kao Markdown fajl u src/content/vijesti/
+  - name: "vijesti"
+    label: "Vijesti"
+    label_singular: "Vijest"
+    folder: "src/content/vijesti"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sort: "date:desc"
+    fields:
+      - { label: "Naslov", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Naslovna slika", name: "image", widget: "image", required: false }
+      - label: "Kategorija"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Najave", value: "najave" }
+          - { label: "Vijesti", value: "vijesti" }
+          - { label: "Rezultati", value: "rezultati" }
+      - label: "Disciplina"
+        name: "discipline"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Preponsko jahanje", value: "preponsko" }
+          - { label: "Dresurno jahanje", value: "dresurno" }
+          - { label: "Daljinsko jahanje", value: "daljinsko" }
+      - { label: "Kratki opis", name: "excerpt", widget: "text", required: false }
+      - { label: "Sadržaj", name: "body", widget: "markdown" }
+
+  # ─── DOKUMENTI ───
+  # Klijent može dodavati PDF-ove i dokumente
+  - name: "dokumenti"
+    label: "Dokumenti"
+    label_singular: "Dokument"
+    folder: "src/content/dokumenti"
+    create: true
+    fields:
+      - { label: "Naziv", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - label: "Kategorija"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Statut", value: "statut" }
+          - { label: "Pravilnici", value: "pravilnici" }
+          - { label: "Tablice bodovanja", value: "tablice" }
+          - { label: "Obrasci", value: "obrasci" }
+          - { label: "Ostalo", value: "ostalo" }
+      - { label: "Datoteka (PDF)", name: "file", widget: "file", required: false }
+      - { label: "Opis", name: "body", widget: "markdown", required: false }
+
+  # ─── KALENDAR ───
+  # Klijent dodaje natjecanja u kalendar
+  - name: "kalendar"
+    label: "Kalendar natjecanja"
+    label_singular: "Natjecanje"
+    folder: "src/content/kalendar"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sort: "date_start:desc"
+    fields:
+      - { label: "Naziv natjecanja", name: "title", widget: "string" }
+      - { label: "Datum početka", name: "date_start", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Datum završetka", name: "date_end", widget: "datetime", format: "YYYY-MM-DD", required: false }
+      - { label: "Lokacija", name: "location", widget: "string" }
+      - label: "Disciplina"
+        name: "discipline"
+        widget: "select"
+        options:
+          - { label: "Preponsko jahanje", value: "preponsko" }
+          - { label: "Dresurno jahanje", value: "dresurno" }
+          - { label: "Daljinsko jahanje", value: "daljinsko" }
+          - { label: "Više disciplina", value: "vise" }
+      - label: "Kategorija"
+        name: "level"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Međunarodno", value: "medunarodno" }
+          - { label: "Državno", value: "drzavno" }
+          - { label: "Regionalno", value: "regionalno" }
+      - { label: "Opis", name: "body", widget: "markdown", required: false }
+
+  # ─── STATIČNE STRANICE ───
+  # Klijent može mijenjati tekst na O nama, Škole jahanja itd.
+  - name: "stranice"
+    label: "Stranice"
+    files:
+      - label: "O nama"
+        name: "o-nama"
+        file: "src/content/stranice/o-nama.md"
+        fields:
+          - { label: "Naslov", name: "title", widget: "string" }
+          - { label: "Opis saveza", name: "opis", widget: "markdown" }
+          - { label: "Predsjednik", name: "predsjednik", widget: "string" }
+          - { label: "Dopredsjednik", name: "dopredsjednik", widget: "string" }
+          - { label: "Glavni tajnik", name: "tajnik", widget: "string" }
+
+      - label: "Škole jahanja"
+        name: "skole-jahanja"
+        file: "src/content/stranice/skole-jahanja.md"
+        fields:
+          - { label: "Naslov", name: "title", widget: "string" }
+          - { label: "Uvodni tekst", name: "intro", widget: "markdown" }
+          - label: "Škole"
+            name: "skole"
+            widget: "list"
+            fields:
+              - { label: "Naziv", name: "naziv", widget: "string" }
+              - { label: "Web stranica", name: "web", widget: "string", required: false }
+              - { label: "Opis", name: "opis", widget: "text", required: false }
+
+      - label: "Lipanjski turnir"
+        name: "lipanjski-turnir"
+        file: "src/content/stranice/lipanjski-turnir.md"
+        fields:
+          - { label: "Naslov", name: "title", widget: "string" }
+          - { label: "Datum", name: "datum", widget: "string" }
+          - { label: "Lokacija", name: "lokacija", widget: "string" }
+          - { label: "Kategorije", name: "kategorije", widget: "string" }
+          - { label: "Opis", name: "body", widget: "markdown" }
