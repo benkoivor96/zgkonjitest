@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konjički sport — Zagrebački konjički savez</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --blue: #1b3a6b;
+  --blue-dark: #152e56;
+  --blue-deeper: #0f2240;
+  --blue-nav: #2a6496;
+  --blue-light: #3b7dc0;
+  --blue-pale: #e6eef8;
+  --blue-wash: #f0f4fa;
+  --white: #ffffff;
+  --off-white: #f8f9fa;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --text: #2d3748;
+  --text-light: #64748b;
+  --serif: 'Libre Baskerville', Georgia, serif;
+  --sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--text); background: var(--white); overflow-x: hidden; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  background: var(--blue);
+  padding: 0.45rem 2rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.8rem; color: rgba(255,255,255,0.9);
+  overflow: hidden; white-space: nowrap;
+}
+.top-bar-label {
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; flex-shrink: 0; font-size: 0.72rem;
+}
+.top-bar a { color: #fff; text-decoration: none; transition: opacity 0.2s; }
+.top-bar a:hover { opacity: 0.8; text-decoration: underline; }
+.top-bar-sep { color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--white); text-align: center;
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--gray-200);
+}
+.header-logo { width: 90px; height: auto; margin-bottom: 0.8rem; }
+.header-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--blue); font-weight: 700;
+  line-height: 1.2; margin-bottom: 0.3rem;
+}
+.header-subtitle {
+  font-size: 0.82rem; color: var(--gray-500);
+  letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--blue-nav);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.nav-home {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0.85rem 1rem; color: white; text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-home:hover { background: rgba(255,255,255,0.1); }
+.nav-home svg { width: 18px; height: 18px; }
+.nav-links { display: flex; list-style: none; flex-wrap: wrap; justify-content: center; }
+.nav-links a {
+  display: block; padding: 0.85rem 1.1rem;
+  color: rgba(255,255,255,0.92); text-decoration: none;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  transition: background 0.2s, color 0.2s; white-space: nowrap;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.nav-links a.active { background: rgba(255,255,255,0.15); color: #fff; }
+.hamburger {
+  display: none; background: none; border: none;
+  cursor: pointer; padding: 0.8rem 1rem;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: white; margin: 4px 0; transition: all 0.3s;
+}
+
+/* ── PAGE HERO ── */
+.page-hero {
+  position: relative;
+  padding: 5rem 2rem 4rem;
+  background: var(--blue-deeper);
+  overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(135deg, rgba(27,58,107,0.92) 0%, rgba(15,34,64,0.8) 100%),
+    url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=1600&q=80') center/cover;
+}
+.page-hero-content {
+  position: relative; z-index: 1;
+  max-width: 800px; margin: 0 auto; text-align: center;
+}
+.page-hero-breadcrumb {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem; color: rgba(255,255,255,0.5);
+  margin-bottom: 1.2rem;
+}
+.page-hero-breadcrumb a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  transition: color 0.2s;
+}
+.page-hero-breadcrumb a:hover { color: #fff; }
+.page-hero-breadcrumb .sep { margin: 0 0.2rem; }
+.page-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #fff; font-weight: 700;
+  line-height: 1.15; margin-bottom: 1rem;
+}
+.page-hero p {
+  font-size: 1.1rem; color: rgba(255,255,255,0.7);
+  line-height: 1.7; max-width: 600px; margin: 0 auto;
+}
+
+/* ── SECTION ── */
+.section { padding: 5rem 2rem; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--blue); letter-spacing: 0.16em;
+  text-transform: uppercase; margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  color: var(--gray-800); font-weight: 700;
+  line-height: 1.25; margin-bottom: 0.6rem;
+}
+.section-desc {
+  font-size: 1rem; color: var(--gray-500);
+  line-height: 1.7; max-width: 640px;
+}
+
+/* ── DISCIPLINE BLOCKS ── */
+.discipline-block {
+  max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.discipline-block.reverse { direction: rtl; }
+.discipline-block.reverse > * { direction: ltr; }
+
+.discipline-img {
+  border-radius: 8px; overflow: hidden;
+  aspect-ratio: 4/3;
+  position: relative;
+}
+.discipline-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s;
+}
+.discipline-img:hover img { transform: scale(1.04); }
+.discipline-img-badge {
+  position: absolute; top: 1rem; left: 1rem;
+  background: var(--blue);
+  color: #fff;
+  padding: 0.35rem 0.8rem;
+  border-radius: 3px;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.discipline-block.reverse .discipline-img-badge {
+  left: auto; right: 1rem;
+}
+
+.discipline-text {}
+.discipline-text .discipline-number {
+  font-family: var(--serif);
+  font-size: 3.5rem; font-weight: 700;
+  color: var(--blue-pale);
+  line-height: 1; margin-bottom: 0.5rem;
+}
+.discipline-text h2 {
+  font-family: var(--serif);
+  font-size: 1.8rem; font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 1rem;
+}
+.discipline-text p {
+  font-size: 0.95rem; color: var(--gray-600);
+  line-height: 1.75; margin-bottom: 1.2rem;
+}
+.discipline-features {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.discipline-feature {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: var(--blue-pale);
+  color: var(--blue);
+  padding: 0.3rem 0.7rem;
+  border-radius: 3px;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.discipline-feature svg {
+  width: 12px; height: 12px; flex-shrink: 0;
+}
+.btn-read-more {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  color: var(--blue); font-weight: 700;
+  font-size: 0.85rem; text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: gap 0.3s;
+}
+.btn-read-more:hover { gap: 0.8rem; }
+.btn-read-more svg { width: 16px; height: 16px; transition: transform 0.3s; }
+.btn-read-more:hover svg { transform: translateX(3px); }
+
+/* ── DIVIDER ── */
+.section-divider {
+  max-width: 1200px; margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gray-200), transparent);
+}
+
+/* ── OLYMPIC FACT ── */
+.olympic-bar {
+  background: var(--blue);
+  padding: 3.5rem 2rem;
+}
+.olympic-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2rem; text-align: center;
+}
+.olympic-item {}
+.olympic-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.8rem;
+}
+.olympic-icon svg { width: 22px; height: 22px; color: #fff; }
+.olympic-value {
+  font-family: var(--serif);
+  font-size: 1.6rem; font-weight: 700;
+  color: #fff; margin-bottom: 0.3rem;
+}
+.olympic-label {
+  font-size: 0.78rem; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.08em;
+}
+
+/* ── CLUBS CTA ── */
+.clubs-cta {
+  background: var(--off-white);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.clubs-cta-inner {
+  max-width: 700px; margin: 0 auto;
+}
+.clubs-cta h2 {
+  font-family: var(--serif);
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--gray-800); margin-bottom: 0.8rem;
+}
+.clubs-cta p {
+  font-size: 1rem; color: var(--gray-500);
+  line-height: 1.7; margin-bottom: 1.5rem;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.8rem; border-radius: 3px;
+  font-weight: 700; font-size: 0.82rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: all 0.25s;
+}
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-blue:hover {
+  background: var(--blue-dark); transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(27,58,107,0.3);
+}
+
+/* ── FOOTER ── */
+footer { background: var(--gray-800); padding: 4rem 2rem 2rem; }
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2.5rem; padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.footer-brand-name {
+  font-family: var(--serif); color: var(--blue-light);
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem;
+}
+.footer-brand p { color: rgba(255,255,255,0.45); font-size: 0.88rem; line-height: 1.65; }
+.footer-col h4 {
+  color: rgba(255,255,255,0.9); font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.footer-col a {
+  display: block; color: rgba(255,255,255,0.45);
+  text-decoration: none; font-size: 0.88rem;
+  padding: 0.25rem 0; transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--blue-light); }
+.footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; padding-top: 1.5rem;
+  color: rgba(255,255,255,0.25); font-size: 0.78rem;
+}
+
+/* ── MOBILE MENU ── */
+.mobile-menu {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--blue-nav); z-index: 200;
+  flex-direction: column; padding: 5rem 2rem 2rem; overflow-y: auto;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  display: block; padding: 0.8rem 0;
+  color: rgba(255,255,255,0.9); text-decoration: none;
+  font-size: 1.1rem; font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.mobile-close {
+  position: absolute; top: 1rem; right: 1.5rem;
+  background: none; border: none;
+  color: white; font-size: 2rem; cursor: pointer;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+.reveal-d3 { transition-delay: 0.3s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .nav-links { display: none; }
+  .hamburger { display: block; }
+  .nav-inner { justify-content: space-between; padding: 0 0.5rem; }
+  .discipline-block, .discipline-block.reverse {
+    grid-template-columns: 1fr;
+    gap: 2rem; direction: ltr;
+  }
+  .olympic-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .section { padding: 3.5rem 1.2rem; }
+  .top-bar { padding: 0.4rem 1rem; font-size: 0.72rem; }
+  .site-header { padding: 1.5rem 1rem 1rem; }
+  .page-hero { padding: 3.5rem 1.2rem 3rem; }
+  .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span class="top-bar-label">Novosti:</span>
+  <a href="#">FEI World Cup Zagreb — 11.-14. lipnja 2026.</a>
+  <span class="top-bar-sep">|</span>
+  <a href="#">2. kolo Nexe Zagrebačke lige i Batida Grand Prix</a>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <img src="logo.png" alt="Zagrebački konjički savez — grb" class="header-logo">
+  <h1 class="header-title">Zagrebački konjički savez</h1>
+  <p class="header-subtitle">Zagreb Equestrian Association</p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-home">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="konjicki-sport.html" class="active">Konjički sport</a></li>
+      <li><a href="#">Kalendar</a></li>
+      <li><a href="#">Škole jahanja</a></li>
+      <li><a href="#">Prvenstvo Zagreba</a></li>
+      <li><a href="#">Lipanjski turnir</a></li>
+      <li><a href="#">Članovi saveza</a></li>
+      <li><a href="#">Dokumenti</a></li>
+      <li><a href="#">O nama</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Izbornik">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&times;</button>
+  <a href="konjicki-sport.html">Konjički sport</a>
+  <a href="#">Kalendar</a>
+  <a href="#">Škole jahanja</a>
+  <a href="#">Prvenstvo Zagreba</a>
+  <a href="#">Lipanjski turnir</a>
+  <a href="#">Članovi saveza</a>
+  <a href="#">Dokumenti</a>
+  <a href="#">O nama</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-hero-breadcrumb">
+      <a href="index.html">Naslovnica</a>
+      <span class="sep">›</span>
+      <span style="color:rgba(255,255,255,0.8);">Konjički sport</span>
+    </div>
+    <h1>Konjički sport</h1>
+    <p>Tri FEI discipline u kojima muškarci i žene ravnopravno nastupaju — individualno ili timski. Od olimpijskih prepona do elegancije dresure i izdržljivosti daljinskog jahanja.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PREPONSKO JAHANJE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="preponsko">
+  <div class="discipline-block reveal">
+    <div class="discipline-img">
+      <img src="https://images.unsplash.com/photo-1449495169669-7b118f960251?w=900&q=80" alt="Preponsko jahanje">
+      <span class="discipline-img-badge">Olimpijska disciplina</span>
+    </div>
+    <div class="discipline-text">
+      <div class="discipline-number">01</div>
+      <h2>Preponsko jahanje</h2>
+      <p>Preponsko jahanje je bez sumnje najpoznatija disciplina konjičkog sporta prepoznata od strane FEI. Muškarci i žene ravnopravno se natječu, individualno ili timski, a disciplina je jedna od tri natjecateljske na Olimpijskim igrama.</p>
+      <p>Skakanje konjima počelo se razvijati u 18. stoljeću, kad je lov na lisice zahtijevao preskakanje ograda. Prvo dokumentirano natjecanje organizirano je 1866. u Parizu, a olimpijskom disciplinom postalo je 1912. godine u Stockholmu.</p>
+      <div class="discipline-features">
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Brzina
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Preciznost
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Spretnost
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Olimpijske igre od 1912.
+        </span>
+      </div>
+      <a href="#" class="btn-read-more">
+        Saznaj više o preponskom jahanju
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DRESURNO JAHANJE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="dresurno">
+  <div class="discipline-block reverse reveal">
+    <div class="discipline-img">
+      <img src="https://images.unsplash.com/photo-1596389885478-ecff04c1b503?w=900&q=80" alt="Dresurno jahanje">
+      <span class="discipline-img-badge">Temeljna disciplina</span>
+    </div>
+    <div class="discipline-text">
+      <div class="discipline-number">02</div>
+      <h2>Dresurno jahanje</h2>
+      <p>Dresurno jahanje je temeljna disciplina konjičkog sporta u kojoj se isprepliće sport i umjetnost suradnje jahača i konja. Cilj je izvesti testove koji u sebi sadrže razne načine kretanja konja — od hoda u kas, zaustavljanja na određenim pozicijama, uz poštivanje obrazaca kretnji i figura.</p>
+      <p>Jahač i konj u suradnji izvode unaprijed definirane testove koje moraju znati napamet. Posebnost su "Freestyle" testovi u kojima jahač definira vlastitu koreografiju uz glazbu. U posljednjih nekoliko godina dresurno jahanje privlači sve veći broj mladih natjecatelja.</p>
+      <div class="discipline-features">
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Elegancija
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Sklad
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Tehnička izvedba
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Freestyle uz glazbu
+        </span>
+      </div>
+      <a href="#" class="btn-read-more">
+        Saznaj više o dresurnom jahanju
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- DALJINSKO JAHANJE -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="section" id="daljinsko">
+  <div class="discipline-block reveal">
+    <div class="discipline-img">
+      <img src="https://images.unsplash.com/photo-1508974239320-0a029497e820?w=900&q=80" alt="Daljinsko jahanje">
+      <span class="discipline-img-badge">Najbrže rastuća disciplina</span>
+    </div>
+    <div class="discipline-text">
+      <div class="discipline-number">03</div>
+      <h2>Daljinsko jahanje</h2>
+      <p>Daljinsko jahanje (endurance) je natjecanje kojim se provjerava brzina i izdržljivost konja, te jahačevo dobro poznavanje konja i terena. Iako se jahačima mjeri vrijeme, naglasak je na okončanju natjecanja u dobroj fizičkoj kondiciji konja.</p>
+      <p>Postavši FEI disciplina 1982. godine, endurance je danas najbrže rastuća konjička disciplina. Natjecanja se sastoje od određenog broja faza, s obaveznim veterinarskim pregledima na svakih 40 km. Jahači imaju slobodu odabrati tempo od starta do cilja.</p>
+      <div class="discipline-features">
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Izdržljivost
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Strategija
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          Dobrobit konja
+        </span>
+        <span class="discipline-feature">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          FEI disciplina od 1982.
+        </span>
+      </div>
+      <a href="#" class="btn-read-more">
+        Saznaj više o daljinskom jahanju
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- OLYMPIC FACTS BAR -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="olympic-bar">
+  <div class="olympic-inner reveal">
+    <div class="olympic-item">
+      <div class="olympic-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="olympic-value">1912.</div>
+      <div class="olympic-label">Konjički sport na Olimpijskim igrama</div>
+    </div>
+    <div class="olympic-item">
+      <div class="olympic-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <div class="olympic-value">3</div>
+      <div class="olympic-label">Olimpijske discipline konjičkog sporta</div>
+    </div>
+    <div class="olympic-item">
+      <div class="olympic-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <div class="olympic-value">Jednako</div>
+      <div class="olympic-label">Muškarci i žene natječu se ravnopravno</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- CLUBS CTA -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="clubs-cta">
+  <div class="clubs-cta-inner reveal">
+    <h2>Želiš se baviti konjičkim sportom?</h2>
+    <p>Zagrebački konjički savez okuplja kvalitetne škole jahanja i klubove za sve uzraste. Pronađi svoju školu i započni svoju konjičku avanturu.</p>
+    <a href="#" class="btn btn-blue">Pronađi školu jahanja</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Zagrebački konjički savez</div>
+      <p>Zagreb Equestrian Association. Više od sedam desetljeća razvoja konjičkog sporta u Zagrebu.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Discipline</h4>
+      <a href="#preponsko">Preponsko jahanje</a>
+      <a href="#dresurno">Dresurno jahanje</a>
+      <a href="#daljinsko">Daljinsko jahanje</a>
+    </div>
+    <div class="footer-col">
+      <h4>Natjecanja</h4>
+      <a href="#">Lipanjski turnir</a>
+      <a href="#">Prvenstvo Zagreba</a>
+      <a href="#">Zagrebačka liga</a>
+      <a href="#">Kalendar</a>
+    </div>
+    <div class="footer-col">
+      <h4>Savez</h4>
+      <a href="#">O nama</a>
+      <a href="#">Klubovi</a>
+      <a href="#">Članovi</a>
+      <a href="#">Dokumenti</a>
+      <a href="#">Škole jahanja</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Zagrebački konjički savez. Sva prava pridržana.</span>
+    <span>OIB: 56195699333</span>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+});
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+});
+document.getElementById('mobileClose').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+});
+</script>
+</body>
+</html>
