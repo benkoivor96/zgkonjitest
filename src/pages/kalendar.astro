@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const sviDogadaji = await getCollection('kalendar');
+const wydarzenia = sviDogadaji
+  .sort((a, b) => new Date(a.data.date_start).getTime() - new Date(b.data.date_start).getTime());
+
+// Group by month
+const monthNames = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
+const grouped = new Map<string, typeof wydarzenia>();
+for (const ev of wydarzenia) {
+  const d = new Date(ev.data.date_start);
+  const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2,'0')}`;
+  const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}.`;
+  if (!grouped.has(key)) grouped.set(key, []);
+  grouped.get(key)!.push(ev);
+}
+
+function formatDate(date: Date): string {
+  return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}.`;
+}
+
+function formatDateRange(start: Date, end?: Date): string {
+  if (!end) return formatDate(start);
+  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+    return `${start.getDate()}.–${end.getDate()}.${end.getMonth()+1}.${end.getFullYear()}.`;
+  }
+  return `${formatDate(start)} – ${formatDate(end)}`;
+}
+
+const disciplineLabels: Record<string, string> = {
+  preponsko: 'Preponsko jahanje',
+  dresurno: 'Dresurno jahanje',
+  daljinsko: 'Daljinsko jahanje',
+  vise: 'Više disciplina'
+};
+const levelLabels: Record<string, string> = {
+  medunarodno: 'Međunarodno',
+  drzavno: 'Državno',
+  regionalno: 'Regionalno'
+};
+
+const now = new Date();
+---
+<BaseLayout title="Kalendar natjecanja" activePage="/kalendar">
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Kalendar</span>
+      </div>
+      <h1>Kalendar natjecanja</h1>
+      <p>Pregled svih nadolazećih natjecanja i turnira u organizaciji ili pod pokroviteljstvom Zagrebačkog konjičkog saveza.</p>
+    </div>
+  </section>
+
+  <section class="section kalendar-section">
+    <div class="kalendar-inner">
+
+      {wydarzenia.length === 0 && (
+        <div class="kalendar-empty reveal">
+          <p>Trenutno nema zakazanih natjecanja. Provjerite ponovno uskoro.</p>
+        </div>
+      )}
+
+      {[...grouped.entries()].map(([key, events]) => {
+        const monthDate = new Date(events[0].data.date_start);
+        const monthLabel = `${monthNames[monthDate.getMonth()]} ${monthDate.getFullYear()}.`;
+        return (
+          <div class="kalendar-month reveal">
+            <div class="kalendar-month-header">
+              <h2>{monthLabel}</h2>
+              <span class="kalendar-month-count">{events.length} {events.length === 1 ? 'natjecanje' : events.length < 5 ? 'natjecanja' : 'natjecanja'}</span>
+            </div>
+            <div class="kalendar-events">
+              {events.map(ev => {
+                const start = new Date(ev.data.date_start);
+                const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
+                const isPast = start < now && (!end || end < now);
+                const isUpcoming = start > now;
+                const isOngoing = start <= now && end && end >= now;
+                return (
+                  <div class={`kalendar-card ${isPast ? 'past' : ''} ${isOngoing ? 'ongoing' : ''}`}>
+                    <div class="kalendar-card-date">
+                      <span class="kalendar-card-day">{start.getDate()}</span>
+                      <span class="kalendar-card-month">{monthNames[start.getMonth()].substring(0,3)}</span>
+                    </div>
+                    <div class="kalendar-card-body">
+                      <div class="kalendar-card-tags">
+                        {ev.data.discipline && <span class={`kalendar-tag disc-${ev.data.discipline}`}>{disciplineLabels[ev.data.discipline]}</span>}
+                        {ev.data.level && <span class="kalendar-tag level">{levelLabels[ev.data.level]}</span>}
+                        {isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
+                      </div>
+                      <h3>{ev.data.title}</h3>
+                      <div class="kalendar-card-info">
+                        <span class="kalendar-card-info-item">
+                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                          {formatDateRange(start, end)}
+                        </span>
+                        <span class="kalendar-card-info-item">
+                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                          {ev.data.location}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .kalendar-section { background: var(--off-white); }
+  .kalendar-inner { max-width: 900px; margin: 0 auto; }
+  .kalendar-empty { text-align: center; padding: 4rem 2rem; color: var(--gray-500); font-size: 1.05rem; }
+
+  .kalendar-month { margin-bottom: 3rem; }
+  .kalendar-month-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 0.8rem; margin-bottom: 1.2rem;
+    border-bottom: 2px solid var(--blue);
+  }
+  .kalendar-month-header h2 {
+    font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--gray-800);
+  }
+  .kalendar-month-count {
+    font-size: 0.78rem; color: var(--gray-400); font-weight: 500;
+  }
+
+  .kalendar-events { display: flex; flex-direction: column; gap: 1rem; }
+
+  .kalendar-card {
+    display: flex; gap: 1.2rem;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  }
+  .kalendar-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    border-color: var(--blue-nav);
+  }
+  .kalendar-card.past { opacity: 0.5; }
+  .kalendar-card.ongoing { border-left: 4px solid var(--blue); }
+
+  .kalendar-card-date {
+    flex-shrink: 0; width: 56px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--blue-pale); border-radius: 6px;
+    padding: 0.6rem 0.4rem;
+  }
+  .kalendar-card-day {
+    font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--blue); line-height: 1;
+  }
+  .kalendar-card-month {
+    font-size: 0.65rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.15rem;
+  }
+
+  .kalendar-card-body { flex: 1; }
+  .kalendar-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+  .kalendar-tag {
+    font-size: 0.62rem; font-weight: 700; padding: 0.2rem 0.55rem;
+    border-radius: 2px; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .disc-preponsko { background: #e8f5e9; color: #2e7d32; }
+  .disc-dresurno { background: #e3f2fd; color: #1565c0; }
+  .disc-daljinsko { background: #fff3e0; color: #e65100; }
+  .disc-vise { background: var(--blue-pale); color: var(--blue); }
+  .kalendar-tag.level { background: var(--gray-100); color: var(--gray-600); }
+  .kalendar-tag.ongoing-tag { background: #c8e6c9; color: #1b5e20; }
+
+  .kalendar-card h3 {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 700;
+    color: var(--gray-800); line-height: 1.35; margin-bottom: 0.5rem;
+  }
+
+  .kalendar-card-info { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  .kalendar-card-info-item {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.82rem; color: var(--gray-500); font-weight: 500;
+  }
+  .kalendar-card-info-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  @media (max-width: 640px) {
+    .kalendar-card { flex-direction: column; gap: 0.8rem; }
+    .kalendar-card-date { width: auto; flex-direction: row; gap: 0.4rem; padding: 0.4rem 0.8rem; align-self: flex-start; }
+    .kalendar-card-info { flex-direction: column; gap: 0.4rem; }
+  }
+</style>
