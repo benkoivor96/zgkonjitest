@@ -12,4 +12,16 @@ const vijesti = defineCollection({
   }),
 });
 
-export const collections = { vijesti };
+const kalendar = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date_start: z.coerce.date(),
+    date_end: z.coerce.date().optional(),
+    location: z.string(),
+    discipline: z.enum(['preponsko', 'dresurno', 'daljinsko', 'vise']),
+    level: z.enum(['medunarodno', 'drzavno', 'regionalno']).optional(),
+  }),
+});
+
+export const collections = { vijesti, kalendar };
