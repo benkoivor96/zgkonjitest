@@ -1,5 +1,6 @@
 ---
 title: O nama
+image: /images/uploads/logo.png
 predsjednik: Damir Djelmić
 dopredsjednik: Denis Gugić
 tajnik: Tomo Kadić
