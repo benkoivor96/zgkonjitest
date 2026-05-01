@@ -6,15 +6,29 @@ const sviDogadaji = await getCollection('kalendar');
 const wydarzenia = sviDogadaji
   .sort((a, b) => new Date(a.data.date_start).getTime() - new Date(b.data.date_start).getTime());
 
-// Group by month
 const monthNames = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
-const grouped = new Map<string, typeof wydarzenia>();
+
+interface GroupedEvents {
+  label: string;
+  events: typeof wydarzenia;
+}
+
+const groupedArr: GroupedEvents[] = [];
+const seenKeys = new Set<string>();
+
 for (const ev of wydarzenia) {
   const d = new Date(ev.data.date_start);
   const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2,'0')}`;
-  const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}.`;
-  if (!grouped.has(key)) grouped.set(key, []);
-  grouped.get(key)!.push(ev);
+  if (!seenKeys.has(key)) {
+    seenKeys.add(key);
+    groupedArr.push({
+      label: `${monthNames[d.getMonth()]} ${d.getFullYear()}.`,
+      events: wydarzenia.filter(e => {
+        const ed = new Date(e.data.date_start);
+        return `${ed.getFullYear()}-${String(ed.getMonth()).padStart(2,'0')}` === key;
+      })
+    });
+  }
 }
 
 function formatDate(date: Date): string {
@@ -45,7 +59,6 @@ const now = new Date();
 ---
 <BaseLayout title="Kalendar natjecanja" activePage="/kalendar">
 
-  <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="page-hero-content">
       <div class="page-hero-breadcrumb">
@@ -67,53 +80,49 @@ const now = new Date();
         </div>
       )}
 
-      {[...grouped.entries()].map(([key, events]) => {
-        const monthDate = new Date(events[0].data.date_start);
-        const monthLabel = `${monthNames[monthDate.getMonth()]} ${monthDate.getFullYear()}.`;
-        return (
-          <div class="kalendar-month reveal">
-            <div class="kalendar-month-header">
-              <h2>{monthLabel}</h2>
-              <span class="kalendar-month-count">{events.length} {events.length === 1 ? 'natjecanje' : events.length < 5 ? 'natjecanja' : 'natjecanja'}</span>
-            </div>
-            <div class="kalendar-events">
-              {events.map(ev => {
-                const start = new Date(ev.data.date_start);
-                const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
-                const isPast = start < now && (!end || end < now);
-                const isUpcoming = start > now;
-                const isOngoing = start <= now && end && end >= now;
-                return (
-                  <div class={`kalendar-card ${isPast ? 'past' : ''} ${isOngoing ? 'ongoing' : ''}`}>
-                    <div class="kalendar-card-date">
-                      <span class="kalendar-card-day">{start.getDate()}</span>
-                      <span class="kalendar-card-month">{monthNames[start.getMonth()].substring(0,3)}</span>
+      {groupedArr.map((group) => (
+        <div class="kalendar-month reveal">
+          <div class="kalendar-month-header">
+            <h2>{group.label}</h2>
+            <span class="kalendar-month-count">{group.events.length} {group.events.length === 1 ? 'natjecanje' : 'natjecanja'}</span>
+          </div>
+          <div class="kalendar-events">
+            {group.events.map((ev) => {
+              const start = new Date(ev.data.date_start);
+              const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
+              const isPast = end ? end < now : start < now;
+              const isOngoing = start <= now && end !== undefined && end >= now;
+              const cardClass = `kalendar-card${isPast ? ' past' : ''}${isOngoing ? ' ongoing' : ''}`;
+              return (
+                <div class={cardClass}>
+                  <div class="kalendar-card-date">
+                    <span class="kalendar-card-day">{start.getDate()}</span>
+                    <span class="kalendar-card-month">{monthNames[start.getMonth()].substring(0,3)}</span>
+                  </div>
+                  <div class="kalendar-card-body">
+                    <div class="kalendar-card-tags">
+                      <span class={`kalendar-tag disc-${ev.data.discipline}`}>{disciplineLabels[ev.data.discipline]}</span>
+                      {ev.data.level && <span class="kalendar-tag level">{levelLabels[ev.data.level]}</span>}
+                      {isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
                     </div>
-                    <div class="kalendar-card-body">
-                      <div class="kalendar-card-tags">
-                        {ev.data.discipline && <span class={`kalendar-tag disc-${ev.data.discipline}`}>{disciplineLabels[ev.data.discipline]}</span>}
-                        {ev.data.level && <span class="kalendar-tag level">{levelLabels[ev.data.level]}</span>}
-                        {isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
-                      </div>
-                      <h3>{ev.data.title}</h3>
-                      <div class="kalendar-card-info">
-                        <span class="kalendar-card-info-item">
-                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                          {formatDateRange(start, end)}
-                        </span>
-                        <span class="kalendar-card-info-item">
-                          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                          {ev.data.location}
-                        </span>
-                      </div>
+                    <h3>{ev.data.title}</h3>
+                    <div class="kalendar-card-info">
+                      <span class="kalendar-card-info-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        {formatDateRange(start, end)}
+                      </span>
+                      <span class="kalendar-card-info-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        {ev.data.location}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      ))}
 
     </div>
   </section>
@@ -134,9 +143,7 @@ const now = new Date();
   .kalendar-month-header h2 {
     font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--gray-800);
   }
-  .kalendar-month-count {
-    font-size: 0.78rem; color: var(--gray-400); font-weight: 500;
-  }
+  .kalendar-month-count { font-size: 0.78rem; color: var(--gray-400); font-weight: 500; }
 
   .kalendar-events { display: flex; flex-direction: column; gap: 1rem; }
 
@@ -144,8 +151,7 @@ const now = new Date();
     display: flex; gap: 1.2rem;
     background: var(--white);
     border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 1.5rem;
+    border-radius: 8px; padding: 1.5rem;
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
   }
   .kalendar-card:hover {
@@ -159,14 +165,14 @@ const now = new Date();
   .kalendar-card-date {
     flex-shrink: 0; width: 56px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    background: var(--blue-pale); border-radius: 6px;
-    padding: 0.6rem 0.4rem;
+    background: var(--blue-pale); border-radius: 6px; padding: 0.6rem 0.4rem;
   }
   .kalendar-card-day {
     font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--blue); line-height: 1;
   }
   .kalendar-card-month {
-    font-size: 0.65rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.15rem;
+    font-size: 0.65rem; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.15rem;
   }
 
   .kalendar-card-body { flex: 1; }
