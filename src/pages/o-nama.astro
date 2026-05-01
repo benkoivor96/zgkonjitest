@@ -6,6 +6,7 @@ const entry = await getEntry('stranice', 'o-nama');
 const { Content } = await render(entry);
 const d = entry.data as Record<string, any>;
 
+const image = d.image || 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=900&q=80';
 const predsjednik = d.predsjednik || 'Damir Djelmić';
 const dopredsjednik = d.dopredsjednik || 'Denis Gugić';
 const tajnik = d.tajnik || 'Tomo Kadić';
@@ -40,7 +41,7 @@ function getInitials(name: string): string {
   <section class="section about-intro" id="o-savezu">
     <div class="about-intro-inner">
       <div class="about-intro-img reveal">
-        <img src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=900&q=80" alt="Hipodrom Zagreb">
+        <img src={image} alt="Zagrebački konjički savez">
       </div>
       <div class="about-intro-text reveal">
         <div class="section-label">O savezu</div>
@@ -175,8 +176,23 @@ function getInitials(name: string): string {
   .about-intro-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
   .about-intro-img { border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; }
   .about-intro-img img { width: 100%; height: 100%; object-fit: cover; }
-  .about-intro-text p, .about-content p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.8; margin-bottom: 1rem; }
   .about-content { margin-top: 1rem; }
+  .about-content p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.8; margin-bottom: 1rem; }
+
+  /* Blockquote = plavi highlight blok */
+  .about-content blockquote {
+    background: var(--blue-pale);
+    border-left: 3px solid var(--blue);
+    padding: 1rem 1.2rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.2rem 0;
+  }
+  .about-content blockquote p {
+    font-size: 0.92rem;
+    color: var(--blue-dark);
+    font-weight: 500;
+    margin-bottom: 0;
+  }
 
   .leadership { background: var(--off-white); }
   .leadership-inner { max-width: 1200px; margin: 0 auto; }
