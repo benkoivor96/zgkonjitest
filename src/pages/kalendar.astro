@@ -8,28 +8,19 @@ const wydarzenia = sviDogadaji
 
 const monthNames = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
 
-interface GroupedEvents {
-  label: string;
-  events: typeof wydarzenia;
-}
+const disciplineLabels: Record<string, string> = {
+  preponsko: 'Preponsko jahanje',
+  dresurno: 'Dresurno jahanje',
+  daljinsko: 'Daljinsko jahanje',
+  vise: 'Više disciplina'
+};
+const levelLabels: Record<string, string> = {
+  medunarodno: 'Međunarodno',
+  drzavno: 'Državno',
+  regionalno: 'Regionalno'
+};
 
-const groupedArr: GroupedEvents[] = [];
-const seenKeys = new Set<string>();
-
-for (const ev of wydarzenia) {
-  const d = new Date(ev.data.date_start);
-  const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2,'0')}`;
-  if (!seenKeys.has(key)) {
-    seenKeys.add(key);
-    groupedArr.push({
-      label: `${monthNames[d.getMonth()]} ${d.getFullYear()}.`,
-      events: wydarzenia.filter(e => {
-        const ed = new Date(e.data.date_start);
-        return `${ed.getFullYear()}-${String(ed.getMonth()).padStart(2,'0')}` === key;
-      })
-    });
-  }
-}
+const now = Date.now();
 
 function formatDate(date: Date): string {
   return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}.`;
@@ -43,19 +34,71 @@ function formatDateRange(start: Date, end?: Date): string {
   return `${formatDate(start)} – ${formatDate(end)}`;
 }
 
-const disciplineLabels: Record<string, string> = {
-  preponsko: 'Preponsko jahanje',
-  dresurno: 'Dresurno jahanje',
-  daljinsko: 'Daljinsko jahanje',
-  vise: 'Više disciplina'
-};
-const levelLabels: Record<string, string> = {
-  medunarodno: 'Međunarodno',
-  drzavno: 'Državno',
-  regionalno: 'Regionalno'
-};
+// Pre-process all events with computed properties
+// This avoids using < > operators inside the template
+interface ProcessedEvent {
+  title: string;
+  day: number;
+  monthShort: string;
+  discipline: string;
+  disciplineLabel: string;
+  level: string | undefined;
+  levelLabel: string;
+  dateRange: string;
+  location: string;
+  cardClass: string;
+  isOngoing: boolean;
+}
 
-const now = new Date();
+interface MonthGroup {
+  label: string;
+  events: ProcessedEvent[];
+}
+
+const processedEvents: ProcessedEvent[] = wydarzenia.map(ev => {
+  const start = new Date(ev.data.date_start);
+  const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
+  const startTime = start.getTime();
+  const endTime = end ? end.getTime() : startTime;
+  const isPast = endTime < now;
+  const isOngoing = startTime <= now && endTime >= now;
+  
+  let cardClass = 'kalendar-card';
+  if (isPast) cardClass += ' past';
+  if (isOngoing) cardClass += ' ongoing';
+
+  return {
+    title: ev.data.title,
+    day: start.getDate(),
+    monthShort: monthNames[start.getMonth()].substring(0, 3),
+    discipline: ev.data.discipline,
+    disciplineLabel: disciplineLabels[ev.data.discipline] || ev.data.discipline,
+    level: ev.data.level,
+    levelLabel: ev.data.level ? (levelLabels[ev.data.level] || '') : '',
+    dateRange: formatDateRange(start, end),
+    location: ev.data.location,
+    cardClass,
+    isOngoing,
+  };
+});
+
+// Group by month
+const groups: MonthGroup[] = [];
+const seenKeys = new Set<string>();
+
+for (let i = 0; i < wydarzenia.length; i++) {
+  const d = new Date(wydarzenia[i].data.date_start);
+  const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`;
+  if (!seenKeys.has(key)) {
+    seenKeys.add(key);
+    const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}.`;
+    const monthEvents = processedEvents.filter((_, idx) => {
+      const ed = new Date(wydarzenia[idx].data.date_start);
+      return `${ed.getFullYear()}-${String(ed.getMonth()).padStart(2, '0')}` === key;
+    });
+    groups.push({ label, events: monthEvents });
+  }
+}
 ---
 <BaseLayout title="Kalendar natjecanja" activePage="/kalendar">
 
@@ -74,52 +117,45 @@ const now = new Date();
   <section class="section kalendar-section">
     <div class="kalendar-inner">
 
-      {wydarzenia.length === 0 && (
+      {processedEvents.length === 0 && (
         <div class="kalendar-empty reveal">
           <p>Trenutno nema zakazanih natjecanja. Provjerite ponovno uskoro.</p>
         </div>
       )}
 
-      {groupedArr.map((group) => (
+      {groups.map((group) => (
         <div class="kalendar-month reveal">
           <div class="kalendar-month-header">
             <h2>{group.label}</h2>
             <span class="kalendar-month-count">{group.events.length} {group.events.length === 1 ? 'natjecanje' : 'natjecanja'}</span>
           </div>
           <div class="kalendar-events">
-            {group.events.map((ev) => {
-              const start = new Date(ev.data.date_start);
-              const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
-              const isPast = end ? end < now : start < now;
-              const isOngoing = start <= now && end !== undefined && end >= now;
-              const cardClass = `kalendar-card${isPast ? ' past' : ''}${isOngoing ? ' ongoing' : ''}`;
-              return (
-                <div class={cardClass}>
-                  <div class="kalendar-card-date">
-                    <span class="kalendar-card-day">{start.getDate()}</span>
-                    <span class="kalendar-card-month">{monthNames[start.getMonth()].substring(0,3)}</span>
+            {group.events.map((ev) => (
+              <div class={ev.cardClass}>
+                <div class="kalendar-card-date">
+                  <span class="kalendar-card-day">{ev.day}</span>
+                  <span class="kalendar-card-month">{ev.monthShort}</span>
+                </div>
+                <div class="kalendar-card-body">
+                  <div class="kalendar-card-tags">
+                    <span class={`kalendar-tag disc-${ev.discipline}`}>{ev.disciplineLabel}</span>
+                    {ev.level && <span class="kalendar-tag level">{ev.levelLabel}</span>}
+                    {ev.isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
                   </div>
-                  <div class="kalendar-card-body">
-                    <div class="kalendar-card-tags">
-                      <span class={`kalendar-tag disc-${ev.data.discipline}`}>{disciplineLabels[ev.data.discipline]}</span>
-                      {ev.data.level && <span class="kalendar-tag level">{levelLabels[ev.data.level]}</span>}
-                      {isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
-                    </div>
-                    <h3>{ev.data.title}</h3>
-                    <div class="kalendar-card-info">
-                      <span class="kalendar-card-info-item">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        {formatDateRange(start, end)}
-                      </span>
-                      <span class="kalendar-card-info-item">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        {ev.data.location}
-                      </span>
-                    </div>
+                  <h3>{ev.title}</h3>
+                  <div class="kalendar-card-info">
+                    <span class="kalendar-card-info-item">
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                      {ev.dateRange}
+                    </span>
+                    <span class="kalendar-card-info-item">
+                      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      {ev.location}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       ))}
