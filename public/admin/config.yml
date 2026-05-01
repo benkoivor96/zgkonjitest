@@ -117,10 +117,26 @@ collections:
         file: "src/content/stranice/o-nama.md"
         fields:
           - { label: "Naslov", name: "title", widget: "string" }
-          - { label: "Opis saveza", name: "opis", widget: "markdown" }
+          - { label: "Opis saveza", name: "body", widget: "markdown" }
           - { label: "Predsjednik", name: "predsjednik", widget: "string" }
           - { label: "Dopredsjednik", name: "dopredsjednik", widget: "string" }
           - { label: "Glavni tajnik", name: "tajnik", widget: "string" }
+          - label: "Izvršni odbor"
+            name: "izvrsni_odbor"
+            widget: "list"
+            field: { label: "Ime i prezime", name: "ime", widget: "string" }
+          - label: "Nadzorni odbor"
+            name: "nadzorni_odbor"
+            widget: "list"
+            fields:
+              - { label: "Ime i prezime", name: "ime", widget: "string" }
+              - { label: "Funkcija", name: "funkcija", widget: "string", required: false }
+          - { label: "Adresa", name: "adresa", widget: "string" }
+          - { label: "Telefon", name: "telefon", widget: "string" }
+          - { label: "E-mail", name: "email", widget: "string" }
+          - { label: "OIB", name: "oib", widget: "string" }
+          - { label: "Banka", name: "banka", widget: "string" }
+          - { label: "IBAN", name: "iban", widget: "string" }
 
       - label: "Škole jahanja"
         name: "skole-jahanja"
