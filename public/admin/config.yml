@@ -117,6 +117,7 @@ collections:
         file: "src/content/stranice/o-nama.md"
         fields:
           - { label: "Naslov", name: "title", widget: "string" }
+          - { label: "Slika", name: "image", widget: "image", required: false }
           - { label: "Opis saveza", name: "body", widget: "markdown" }
           - { label: "Predsjednik", name: "predsjednik", widget: "string" }
           - { label: "Dopredsjednik", name: "dopredsjednik", widget: "string" }
