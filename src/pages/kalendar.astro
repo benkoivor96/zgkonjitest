@@ -5,9 +5,13 @@ import { getCollection } from 'astro:content';
 // Kalendar entries (events without an article)
 const kalendarEntries = await getCollection('kalendar');
 
-// Vijesti that also serve as calendar events (have date_start field)
+// Vijesti tagged as je_dogadaj:true also appear in calendar (must have date_start)
 const sveVijesti = await getCollection('vijesti');
-const vijestiKaoDogadaji = sveVijesti.filter(v => v.data.date_start);
+const vijestiKaoDogadaji = sveVijesti.filter(v => {
+  if (!v.data.date_start) return false;
+  // New posts use je_dogadaj flag; older posts without the flag fall back to date_start presence
+  return v.data.je_dogadaj !== false;
+});
 
 // Merge both sources into a unified raw list
 interface RawEvent {

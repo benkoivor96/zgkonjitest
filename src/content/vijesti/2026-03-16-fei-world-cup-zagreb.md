@@ -5,6 +5,7 @@ image: "/images/uploads/fei-world-cup.jpg"
 category: najave
 discipline: preponsko
 excerpt: "Od 11. do 14. lipnja zagrebački Hipodrom ponovno postaje pozornica vrhunskog konjičkog sporta u sklopu 70. Lipanjskog turnira."
+je_dogadaj: true
 date_start: 2026-06-11
 date_end: 2026-06-14
 location: "Hipodrom Zagreb"

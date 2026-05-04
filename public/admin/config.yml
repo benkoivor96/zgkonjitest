@@ -21,23 +21,26 @@ locale: "hr"
 
 collections:
 
-  # ─── VIJESTI ───
-  # Klijent klikne "Nova vijest" → upiše naslov, tekst, sliku
-  # Sprema se kao Markdown fajl u src/content/vijesti/
+  # ─── VIJESTI / DOGAĐAJI ───
+  # Svaka objava automatski ide u vijesti.
+  # Uključi toggle "Prikaži u kalendaru" → pojave se polja za datum i lokaciju
+  # → objava se pojavljuje i u Kalendaru natjecanja.
+  # Bez upisanog datuma početka — ne može biti događaj u kalendaru.
   - name: "vijesti"
-    label: "Vijesti"
-    label_singular: "Vijest"
+    label: "Vijesti i događaji"
+    label_singular: "Objava"
     folder: "src/content/vijesti"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     sort: "date:desc"
     fields:
       - { label: "Naslov", name: "title", widget: "string" }
-      - { label: "Datum", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Datum objave", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
       - { label: "Naslovna slika", name: "image", widget: "image", required: false }
       - label: "Kategorija"
         name: "category"
         widget: "select"
+        required: false
         options:
           - { label: "Najave", value: "najave" }
           - { label: "Vijesti", value: "vijesti" }
@@ -50,7 +53,50 @@ collections:
           - { label: "Preponsko jahanje", value: "preponsko" }
           - { label: "Dresurno jahanje", value: "dresurno" }
           - { label: "Daljinsko jahanje", value: "daljinsko" }
+          - { label: "Više disciplina", value: "vise" }
       - { label: "Kratki opis", name: "excerpt", widget: "text", required: false }
+
+      # ── TAG: Prikaži u kalendaru ──────────────────────────────────────
+      - label: "Prikaži i kao događaj u kalendaru"
+        name: "je_dogadaj"
+        widget: "boolean"
+        default: false
+        hint: "Uključi ako objava opisuje natjecanje ili događaj — pojavit će se i u Kalendaru natjecanja."
+
+      - label: "Datum početka događaja"
+        name: "date_start"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        time_format: false
+        required: false
+        hint: "⚠ Obavezno za prikaz u kalendaru"
+        condition: { field: "je_dogadaj", value: true }
+
+      - label: "Datum završetka događaja"
+        name: "date_end"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        time_format: false
+        required: false
+        condition: { field: "je_dogadaj", value: true }
+
+      - label: "Lokacija"
+        name: "location"
+        widget: "string"
+        required: false
+        condition: { field: "je_dogadaj", value: true }
+
+      - label: "Razina natjecanja"
+        name: "level"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Međunarodno", value: "medunarodno" }
+          - { label: "Državno", value: "drzavno" }
+          - { label: "Regionalno", value: "regionalno" }
+        condition: { field: "je_dogadaj", value: true }
+      # ─────────────────────────────────────────────────────────────────
+
       - { label: "Sadržaj", name: "body", widget: "markdown" }
 
   # ─── DOKUMENTI ───

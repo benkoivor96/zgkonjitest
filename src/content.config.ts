@@ -9,7 +9,8 @@ const vijesti = defineCollection({
     category: z.enum(['najave', 'vijesti', 'rezultati']).optional(),
     discipline: z.enum(['preponsko', 'dresurno', 'daljinsko', 'vise']).optional(),
     excerpt: z.string().optional(),
-    // Opcionalna kalendarska polja — vijest s ovim poljima pojavljuje se i u kalendaru
+    // Kalendarska polja — vijest s je_dogadaj:true pojavljuje se i u kalendaru
+    je_dogadaj: z.boolean().optional(),
     date_start: z.coerce.date().optional(),
     date_end: z.coerce.date().optional(),
     location: z.string().optional(),
