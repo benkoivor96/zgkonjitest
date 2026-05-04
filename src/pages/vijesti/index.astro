@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const sveVijesti = await getCollection('vijesti');
+const vijesti = sveVijesti
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const monthNames = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja','srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+
+function formatDate(date: Date): string {
+  return `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}.`;
+}
+
+function categoryLabel(cat?: string): string {
+  const labels: Record<string, string> = { najave: 'Najave', vijesti: 'Vijesti', rezultati: 'Rezultati' };
+  return labels[cat || ''] || '';
+}
+
+function disciplineLabel(disc?: string): string {
+  const labels: Record<string, string> = { preponsko: 'Preponsko', dresurno: 'Dresura', daljinsko: 'Daljinsko' };
+  return labels[disc || ''] || '';
+}
+---
+<BaseLayout title="Vijesti" activePage="/vijesti">
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Vijesti</span>
+      </div>
+      <h1>Vijesti</h1>
+      <p>Sve vijesti iz svijeta konjičkog sporta — najave natjecanja, rezultati i novosti iz Zagrebačkog konjičkog saveza.</p>
+    </div>
+  </section>
+
+  <section class="section vijesti-archive">
+    <div class="vijesti-archive-inner">
+
+      {vijesti.length === 0 && (
+        <div class="vijesti-empty reveal">
+          <p>Trenutno nema objavljenih vijesti.</p>
+        </div>
+      )}
+
+      <div class="vijesti-grid">
+        {vijesti.map((vijest, i) => (
+          <a class={`vijesti-card reveal ${i === 0 ? 'vijesti-card-featured' : ''}`} href={`/vijesti/${vijest.id}`}>
+            {vijest.data.image && (
+              <div class="vijesti-card-img">
+                <img src={vijest.data.image} alt={vijest.data.title}>
+              </div>
+            )}
+            {!vijest.data.image && (
+              <div class="vijesti-card-img">
+                <div class="vijesti-card-placeholder">
+                  <svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                  </svg>
+                </div>
+              </div>
+            )}
+            <div class="vijesti-card-body">
+              <div class="vijesti-tag">
+                {vijest.data.category && <span>{categoryLabel(vijest.data.category)}</span>}
+                {vijest.data.discipline && <span>{disciplineLabel(vijest.data.discipline)}</span>}
+              </div>
+              <h3>{vijest.data.title}</h3>
+              {vijest.data.excerpt && i === 0 && <p>{vijest.data.excerpt}</p>}
+              <div class="vijesti-card-date">{formatDate(new Date(vijest.data.date))}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+  .vijesti-archive { background: var(--off-white); }
+  .vijesti-archive-inner { max-width: 1200px; margin: 0 auto; }
+  .vijesti-empty { text-align: center; padding: 4rem 2rem; color: var(--gray-500); font-size: 1.05rem; }
+
+  .vijesti-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .vijesti-card {
+    display: flex; flex-direction: column;
+    background: var(--white);
+    border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--gray-200);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none; color: inherit;
+  }
+  .vijesti-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .vijesti-card-featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+
+  .vijesti-card-img { overflow: hidden; flex-shrink: 0; }
+  .vijesti-card:not(.vijesti-card-featured) .vijesti-card-img { aspect-ratio: 16/9; }
+  .vijesti-card-featured .vijesti-card-img { width: 50%; min-height: 320px; }
+  .vijesti-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s;
+  }
+  .vijesti-card:hover .vijesti-card-img img { transform: scale(1.04); }
+
+  .vijesti-card-placeholder {
+    width: 100%; height: 100%; min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--blue-pale);
+  }
+  .vijesti-card-placeholder svg {
+    width: 48px; height: 48px; color: var(--blue); opacity: 0.3;
+  }
+
+  .vijesti-card-body {
+    padding: 1.5rem;
+    display: flex; flex-direction: column;
+    justify-content: center; flex: 1;
+  }
+  .vijesti-card-featured .vijesti-card-body { padding: 2rem 2.5rem; }
+
+  .vijesti-tag { display: inline-flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+  .vijesti-tag span {
+    font-size: 0.65rem; font-weight: 700;
+    color: var(--blue); background: var(--blue-pale);
+    padding: 0.2rem 0.55rem; border-radius: 2px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  .vijesti-card h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--gray-800); line-height: 1.4;
+    margin-bottom: 0.5rem;
+  }
+  .vijesti-card-featured h3 { font-size: 1.35rem; }
+
+  .vijesti-card p {
+    font-size: 0.9rem; color: var(--gray-500);
+    line-height: 1.6; margin-bottom: 0.8rem;
+  }
+
+  .vijesti-card-date {
+    font-size: 0.75rem; color: var(--gray-400);
+    font-weight: 500; margin-top: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .vijesti-grid { grid-template-columns: 1fr; }
+    .vijesti-card-featured { flex-direction: column; }
+    .vijesti-card-featured .vijesti-card-img { width: 100%; min-height: 220px; }
+  }
+</style>

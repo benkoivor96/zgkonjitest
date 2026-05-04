@@ -1,0 +1,21 @@
+---
+title: "Škole jahanja"
+intro: "Škola jahanja nudi program za početnike uzrasta od 7 godina starosti, a za starije nema ograničenja. Polaznici uče na teoretskim i praktičnim predavanjima o timarenju, sedlanju i jahanju prema programu Hrvatskog konjičkog saveza. Nakon odrađenih teoretskih i praktičnih sati polaže se ispit za jahačku dozvolu. Škola jahanja za napredne polaznike u disciplinama dresure i preponskog jahanja, također nudi teoretski i praktični program prema pravilima Hrvatskog konjičkog saveza za polaganje natjecateljskog ispita."
+napomena: "Više o školi jahanja i programima škole jahanja pogledajte na web stranicama klubova."
+skole:
+  - naziv: "Konjički klub Jarun"
+    slika: ""
+    web: "https://www.kkjarun.hr"
+    lokacija: "Zagreb — Jarun"
+    opis: "Škola jahanja za početnike i napredne jahače u disciplinama preponskog i dresurnog jahanja."
+  - naziv: "Konjički klub Evago"
+    slika: ""
+    web: "https://www.kkevago.hr"
+    lokacija: "Zagreb"
+    opis: "Program jahanja za sve uzraste s individualnim pristupom svakom polazniku."
+  - naziv: "PJ Hipodrom Zagreb"
+    slika: ""
+    web: ""
+    lokacija: "Hipodrom Zagreb"
+    opis: "Škola jahanja na zagrebačkom Hipodromu s dugogodišnjom tradicijom."
+---

@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const entry = await getEntry('stranice', 'skole-jahanja');
+const d = entry.data as Record<string, any>;
+
+const title = d.title || 'Škole jahanja';
+const intro = d.intro || '';
+const napomena = d.napomena || '';
+const skole: {naziv: string; slika?: string; web?: string; lokacija?: string; opis?: string}[] = d.skole || [];
+---
+<BaseLayout title={title} activePage="/skole-jahanja">
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Škole jahanja</span>
+      </div>
+      <h1>Škole jahanja</h1>
+      <p>Pronađite školu jahanja u Zagrebu — programi za sve uzraste od početnika do naprednih jahača.</p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section skole-intro">
+    <div class="skole-intro-inner reveal">
+      <div class="section-label">O školama</div>
+      <h2 class="section-title">Program škole jahanja</h2>
+      <p class="intro-text">{intro}</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ŠKOLE GRID -->
+  <section class="section skole-section">
+    <div class="skole-grid-inner">
+      <div class="skole-grid-header reveal">
+        <div class="section-label">Škole</div>
+        <h2 class="section-title">Pronađi svoju školu</h2>
+      </div>
+
+      <div class="skole-grid">
+        {skole.map((skola, i) => (
+          <div class={`skola-card reveal ${i === 1 ? 'reveal-d1' : ''} ${i === 2 ? 'reveal-d2' : ''}`}>
+            <div class="skola-card-img">
+              {skola.slika ? (
+                <img src={skola.slika} alt={skola.naziv} />
+              ) : (
+                <div class="skola-card-placeholder">
+                  <svg fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+                    <path d="M8 11a2 2 0 100-4 2 2 0 000 4zM21 15l-5-5L5 21"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+            <div class="skola-card-body">
+              <h3>{skola.naziv}</h3>
+              {skola.lokacija && (
+                <div class="skola-location">
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  {skola.lokacija}
+                </div>
+              )}
+              {skola.opis && <p>{skola.opis}</p>}
+              {skola.web && (
+                <a href={skola.web} class="skola-link" target="_blank" rel="noopener">
+                  Posjeti web stranicu
+                  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {napomena && (
+        <div class="skole-napomena reveal">
+          <p>{napomena}</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="skole-cta">
+    <div class="skole-cta-inner reveal">
+      <h2>Imaš pitanja o školi jahanja?</h2>
+      <p>Kontaktiraj nas za više informacija o programima, cijenama i terminima.</p>
+      <a href="/o-nama#kontakt" class="btn btn-blue">Kontaktirajte nas</a>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style is:global>
+  .skole-intro { background: var(--white); }
+  .skole-intro-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+  .intro-text { font-size: 1rem; color: var(--gray-600); line-height: 1.8; margin-top: 1rem; }
+
+  .skole-section { background: var(--off-white); }
+  .skole-grid-inner { max-width: 1200px; margin: 0 auto; }
+  .skole-grid-header { margin-bottom: 2.5rem; }
+
+  .skole-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .skola-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .skola-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .skola-card-img {
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: var(--blue-pale);
+  }
+  .skola-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s;
+  }
+  .skola-card:hover .skola-card-img img { transform: scale(1.04); }
+
+  .skola-card-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--blue-pale);
+  }
+  .skola-card-placeholder svg {
+    width: 48px; height: 48px; color: var(--blue);
+    opacity: 0.3;
+  }
+
+  .skola-card-body { padding: 1.5rem; }
+
+  .skola-card-body h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+  }
+
+  .skola-location {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.82rem; color: var(--gray-500); font-weight: 500;
+    margin-bottom: 0.8rem;
+  }
+  .skola-location svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .skola-card-body p {
+    font-size: 0.9rem; color: var(--gray-600);
+    line-height: 1.65; margin-bottom: 1rem;
+  }
+
+  .skola-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--blue); font-weight: 700;
+    font-size: 0.82rem; text-decoration: none;
+    transition: gap 0.3s;
+  }
+  .skola-link:hover { gap: 0.7rem; }
+  .skola-link svg { width: 14px; height: 14px; }
+
+  .skole-napomena {
+    margin-top: 2.5rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--blue-pale);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+  }
+  .skole-napomena p {
+    font-size: 0.9rem; color: var(--blue-dark);
+    font-weight: 500; line-height: 1.6;
+    margin: 0;
+  }
+
+  .skole-cta {
+    background: var(--white);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--gray-200);
+  }
+  .skole-cta-inner { max-width: 600px; margin: 0 auto; }
+  .skole-cta h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--gray-800); margin-bottom: 0.6rem;
+  }
+  .skole-cta p {
+    font-size: 1rem; color: var(--gray-500);
+    line-height: 1.7; margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .skole-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  }
+</style>

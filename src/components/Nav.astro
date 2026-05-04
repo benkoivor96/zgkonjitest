@@ -1,0 +1,70 @@
+---
+/* Nav.astro — navigacija
+   Dodaj/makni stavku OVDJE → ažurirano na svim stranicama */
+
+interface Props {
+  activePage?: string;
+}
+const { activePage = '' } = Astro.props;
+
+const links = [
+  { href: '/konjicki-sport', label: 'Konjički sport' },
+  { href: '/kalendar', label: 'Kalendar' },
+  { href: '/skole-jahanja', label: 'Škole jahanja' },
+  { href: '/prvenstvo-zagreba', label: 'Prvenstvo Zagreba' },
+  { href: '/lipanjski-turnir', label: 'Lipanjski turnir' },
+  { href: '/clanovi-saveza', label: 'Članovi saveza' },
+  { href: '/dokumenti', label: 'Dokumenti' },
+  { href: '/o-nama', label: 'O nama' },
+];
+---
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-home">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </a>
+    <ul class="nav-links">
+      {links.map(link => (
+        <li>
+          <a href={link.href} class={activePage === link.href ? 'active' : ''}>
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Izbornik">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&times;</button>
+  {links.map(link => (
+    <a href={link.href}>{link.label}</a>
+  ))}
+</div>
+
+<style>
+  nav { background: var(--blue-nav); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .nav-home { display: flex; align-items: center; padding: 0.85rem 1rem; color: white; text-decoration: none; transition: background 0.2s; }
+  .nav-home:hover { background: rgba(255,255,255,0.1); }
+  .nav-home svg { width: 18px; height: 18px; }
+  .nav-links { display: flex; list-style: none; flex-wrap: wrap; justify-content: center; }
+  .nav-links a { display: block; padding: 0.85rem 1.1rem; color: rgba(255,255,255,0.92); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.2s; white-space: nowrap; }
+  .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .nav-links a.active { background: rgba(255,255,255,0.15); color: #fff; }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.8rem 1rem; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: white; margin: 4px 0; }
+  .mobile-menu { display: none; position: fixed; inset: 0; background: var(--blue-nav); z-index: 200; flex-direction: column; padding: 5rem 2rem 2rem; overflow-y: auto; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { display: block; padding: 0.8rem 0; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 1.1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .mobile-close { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
+</style>
+
+<script>
+  document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('mobileMenu')?.classList.add('open'));
+  document.getElementById('mobileClose')?.addEventListener('click', () => document.getElementById('mobileMenu')?.classList.remove('open'));
+</script>
