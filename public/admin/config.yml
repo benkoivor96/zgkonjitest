@@ -187,3 +187,4 @@ collections:
               - { label: "Telefon", name: "telefon", widget: "string", required: false }
               - { label: "E-mail", name: "email", widget: "string" }
               - { label: "OIB", name: "oib", widget: "string", required: false }
+              - { label: "Žiro-račun", name: "ziro_racun", widget: "string", required: false }
