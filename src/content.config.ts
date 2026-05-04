@@ -7,8 +7,13 @@ const vijesti = defineCollection({
     date: z.coerce.date(),
     image: z.string().optional(),
     category: z.enum(['najave', 'vijesti', 'rezultati']).optional(),
-    discipline: z.enum(['preponsko', 'dresurno', 'daljinsko']).optional(),
+    discipline: z.enum(['preponsko', 'dresurno', 'daljinsko', 'vise']).optional(),
     excerpt: z.string().optional(),
+    // Opcionalna kalendarska polja — vijest s ovim poljima pojavljuje se i u kalendaru
+    date_start: z.coerce.date().optional(),
+    date_end: z.coerce.date().optional(),
+    location: z.string().optional(),
+    level: z.enum(['medunarodno', 'drzavno', 'regionalno']).optional(),
   }),
 });
 
