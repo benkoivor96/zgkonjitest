@@ -37,6 +37,7 @@ function formatDateRange(start: Date, end?: Date): string {
 // Pre-process all events with computed properties
 // This avoids using < > operators inside the template
 interface ProcessedEvent {
+  slug: string;
   title: string;
   day: number;
   monthShort: string;
@@ -68,6 +69,7 @@ const processedEvents: ProcessedEvent[] = wydarzenia.map(ev => {
   if (isOngoing) cardClass += ' ongoing';
 
   return {
+    slug: ev.id,
     title: ev.data.title,
     day: start.getDate(),
     monthShort: monthNames[start.getMonth()].substring(0, 3),
@@ -131,7 +133,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
           </div>
           <div class="kalendar-events">
             {group.events.map((ev) => (
-              <div class={ev.cardClass}>
+              <a href={`/kalendar/${ev.slug}`} class={ev.cardClass}>
                 <div class="kalendar-card-date">
                   <span class="kalendar-card-day">{ev.day}</span>
                   <span class="kalendar-card-month">{ev.monthShort}</span>
@@ -154,7 +156,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
                     </span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -189,6 +191,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
     border: 1px solid var(--gray-200);
     border-radius: 8px; padding: 1.5rem;
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    text-decoration: none; color: inherit; cursor: pointer;
   }
   .kalendar-card:hover {
     transform: translateY(-2px);
