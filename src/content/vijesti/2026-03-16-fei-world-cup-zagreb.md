@@ -24,7 +24,7 @@ Natjecateljski program obuhvatit će niz međunarodnih utakmica različitih kate
 
 Uz sportski program organizatori pripremaju i sadržaje namijenjene široj publici, uključujući obiteljske aktivnosti i prateći program, a **ulaz za posjetitelje bit će besplatan**.
 
-![70. Lipanjski turnir — FEI World Cup Zagreb poster](/images/uploads/fei-world-cup-poster.jpg)
+![70. Lipanjski turnir — FEI World Cup Zagreb poster](/images/uploads/fei-poster.jpg)
 
 Tijekom četiri dana turnir će na zagrebačkom Hipodromu okupiti vrhunsku međunarodnu sportsku elitu — najbolje jahače i njihove konje, vrhunske sportaše čija vrijednost na međunarodnom tržištu često doseže milijunske iznose — kao i njihove timove, vlasnike i publiku.
 
