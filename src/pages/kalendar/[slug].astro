@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const dogadaji = await getCollection('kalendar');
+  return dogadaji.map(ev => ({
+    params: { slug: ev.id },
+    props: { ev },
+  }));
+}
+
+const { ev } = Astro.props;
+const { Content } = await render(ev);
+
+const monthNames = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja','srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+const monthNamesShort = ['Sij','Velj','Ožu','Tra','Svi','Lip','Srp','Kol','Ruj','Lis','Stu','Pro'];
+
+function formatDate(date: Date): string {
+  return `${date.getDate()}. ${monthNames[date.getMonth()]} ${date.getFullYear()}.`;
+}
+function formatDateRange(start: Date, end?: Date): string {
+  if (!end) return formatDate(start);
+  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+    return `${start.getDate()}.–${end.getDate()}. ${monthNames[end.getMonth()]} ${end.getFullYear()}.`;
+  }
+  return `${formatDate(start)} – ${formatDate(end)}`;
+}
+
+const start = new Date(ev.data.date_start);
+const end = ev.data.date_end ? new Date(ev.data.date_end) : undefined;
+const dateRange = formatDateRange(start, end);
+
+const disciplineLabels: Record<string, string> = {
+  preponsko: 'Preponsko jahanje',
+  dresurno: 'Dresurno jahanje',
+  daljinsko: 'Daljinsko jahanje',
+  vise: 'Više disciplina',
+};
+const levelLabels: Record<string, string> = {
+  medunarodno: 'Međunarodno',
+  drzavno: 'Državno',
+  regionalno: 'Regionalno',
+};
+
+const discipline = ev.data.discipline;
+const level = ev.data.level;
+const now = Date.now();
+const endTime = end ? end.getTime() : start.getTime();
+const isPast = endTime < now;
+const isOngoing = start.getTime() <= now && endTime >= now;
+---
+<BaseLayout title={ev.data.title}>
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <a href="/kalendar">Kalendar</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Natjecanje</span>
+      </div>
+      <h1>{ev.data.title}</h1>
+    </div>
+  </section>
+
+  <article class="event-section">
+    <div class="event-inner">
+
+      <div class="event-meta">
+        <span class={`event-tag disc-${discipline}`}>{disciplineLabels[discipline] || discipline}</span>
+        {level && <span class="event-tag level">{levelLabels[level] || level}</span>}
+        {isOngoing && <span class="event-tag ongoing">U tijeku</span>}
+        {isPast && <span class="event-tag past-tag">Završeno</span>}
+      </div>
+
+      <div class="event-details">
+        <div class="event-detail-item">
+          <div class="event-detail-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <div class="event-detail-label">Datum</div>
+            <div class="event-detail-value">{dateRange}</div>
+          </div>
+        </div>
+        <div class="event-detail-item">
+          <div class="event-detail-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <div class="event-detail-label">Lokacija</div>
+            <div class="event-detail-value">{ev.data.location}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-content">
+        <Content />
+      </div>
+
+      <div class="event-back">
+        <a href="/kalendar" class="btn-back">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+          Povratak na kalendar
+        </a>
+      </div>
+    </div>
+  </article>
+
+</BaseLayout>
+
+<style>
+  .event-section { padding: 3rem 2rem 5rem; }
+  .event-inner { max-width: 760px; margin: 0 auto; }
+
+  .event-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .event-tag {
+    font-size: 0.62rem; font-weight: 700; padding: 0.25rem 0.6rem;
+    border-radius: 2px; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .disc-preponsko { background: #e8f5e9; color: #2e7d32; }
+  .disc-dresurno { background: #e3f2fd; color: #1565c0; }
+  .disc-daljinsko { background: #fff3e0; color: #e65100; }
+  .disc-vise { background: var(--blue-pale); color: var(--blue); }
+  .event-tag.level { background: var(--gray-100); color: var(--gray-600); }
+  .event-tag.ongoing { background: #c8e6c9; color: #1b5e20; }
+  .event-tag.past-tag { background: var(--gray-100); color: var(--gray-400); }
+
+  .event-details {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    background: var(--off-white); border: 1px solid var(--gray-200);
+    border-radius: 8px; padding: 1.5rem; margin-bottom: 2.5rem;
+  }
+  .event-detail-item { display: flex; align-items: flex-start; gap: 0.85rem; flex: 1; min-width: 200px; }
+  .event-detail-icon {
+    width: 38px; height: 38px; flex-shrink: 0;
+    background: var(--blue); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .event-detail-icon svg { width: 18px; height: 18px; color: #fff; }
+  .event-detail-label { font-size: 0.65rem; color: var(--gray-400); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem; }
+  .event-detail-value { font-size: 1rem; color: var(--gray-800); font-weight: 600; }
+
+  .event-content { font-size: 1.05rem; line-height: 1.85; color: var(--gray-700); }
+  .event-content h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--gray-800); margin: 2rem 0 0.8rem; }
+  .event-content h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 700; color: var(--gray-800); margin: 1.5rem 0 0.6rem; }
+  .event-content p { margin-bottom: 1.2rem; }
+  .event-content ul, .event-content ol { margin: 1rem 0 1.2rem 1.5rem; }
+  .event-content li { margin-bottom: 0.4rem; }
+  .event-content strong { color: var(--gray-800); }
+
+  .event-back { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--gray-200); }
+  .btn-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--blue); font-weight: 600; font-size: 0.88rem; text-decoration: none; transition: gap 0.3s; }
+  .btn-back:hover { gap: 0.8rem; }
+</style>
