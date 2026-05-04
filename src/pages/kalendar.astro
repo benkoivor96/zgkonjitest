@@ -2,8 +2,33 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const sviDogadaji = await getCollection('kalendar');
-const wydarzenia = sviDogadaji
+// Kalendar entries (events without an article)
+const kalendarEntries = await getCollection('kalendar');
+
+// Vijesti that also serve as calendar events (have date_start field)
+const sveVijesti = await getCollection('vijesti');
+const vijestiKaoDogadaji = sveVijesti.filter(v => v.data.date_start);
+
+// Merge both sources into a unified raw list
+interface RawEvent {
+  id: string;
+  link: string;
+  data: {
+    title: string;
+    date_start: string | Date;
+    date_end?: string | Date;
+    location: string;
+    discipline: string;
+    level?: string;
+  };
+}
+
+const sviRaw: RawEvent[] = [
+  ...kalendarEntries.map(e => ({ id: e.id, link: `/kalendar/${e.id}`, data: e.data as RawEvent['data'] })),
+  ...vijestiKaoDogadaji.map(e => ({ id: e.id, link: `/vijesti/${e.id}`, data: e.data as RawEvent['data'] })),
+];
+
+const wydarzenia = sviRaw
   .sort((a, b) => new Date(a.data.date_start).getTime() - new Date(b.data.date_start).getTime());
 
 const monthNames = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
@@ -38,6 +63,7 @@ function formatDateRange(start: Date, end?: Date): string {
 // This avoids using < > operators inside the template
 interface ProcessedEvent {
   slug: string;
+  link: string;
   title: string;
   day: number;
   monthShort: string;
@@ -70,6 +96,7 @@ const processedEvents: ProcessedEvent[] = wydarzenia.map(ev => {
 
   return {
     slug: ev.id,
+    link: ev.link,
     title: ev.data.title,
     day: start.getDate(),
     monthShort: monthNames[start.getMonth()].substring(0, 3),
@@ -133,7 +160,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
           </div>
           <div class="kalendar-events">
             {group.events.map((ev) => (
-              <a href={`/kalendar/${ev.slug}`} class={ev.cardClass}>
+              <a href={ev.link} class={ev.cardClass}>
                 <div class="kalendar-card-date">
                   <span class="kalendar-card-day">{ev.day}</span>
                   <span class="kalendar-card-month">{ev.monthShort}</span>
