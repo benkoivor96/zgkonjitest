@@ -51,4 +51,14 @@ const rezultati = defineCollection({
   }),
 });
 
-export const collections = { vijesti, kalendar, rezultati, sponzori };
+const dokumenti = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    category: z.enum(['statut', 'pravilnici', 'tablice', 'obrasci', 'ostalo']),
+    file: z.string().optional(),
+  }),
+});
+
+export const collections = { vijesti, kalendar, rezultati, sponzori, dokumenti };
