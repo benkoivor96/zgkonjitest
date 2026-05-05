@@ -11,6 +11,8 @@ Na osječkom hipodromu od **26. do 29. lipnja 2025.** održano je Prvenstvo Hrva
 
 Četverodnevno natjecanje okupilo je najbolje hrvatske jahače u svim dobnim i sportskim kategorijama — od pony jahača do seniora — i obuhvatilo visine od 60 do 140 cm. Zagrebački konjički savez i ovom je prilikom imao snažnu postavu, s više istaknutih pojedinaca među osvajačima prvih mjesta.
 
+U nastavku donosimo popis prvih mjesta po disciplinama i visinama:
+
 ## 26. lipnja 2025.
 
 - **0,60 m** — Strahinja Brković (KK Dunavski raj) — Cascada B
@@ -30,5 +32,13 @@ Na osječkom hipodromu od **26. do 29. lipnja 2025.** održano je Prvenstvo Hrva
 - **1,25 m** (juniori) — Lota Babić (SKK Sv. Juraj) — Versandro
 - **1,30 m** (mladi jahači) — Josip Jadrijević (KK BIT-EK Team) — Clever Boy
 - **1,40 m** (seniori) — Indi Šimleša (SKK Sv. Juraj) — Quinte
+
+Tablični prikaz s rezultatima po danima i kategorijama:
+
+![Rezultati Adriatic Challenge 2025 — tablica 1](/images/uploads/osijek-prvenstvohr-tablica-1.png)
+
+![Rezultati Adriatic Challenge 2025 — tablica 2](/images/uploads/osijek-prvenstvohr-tablica-2.png)
+
+[Preuzmi službene rezultate (PDF)](/images/uploads/osijek-rezultati-2025.pdf)
 
 *Službeni fotograf na natjecanju: Sanja Koblar*
