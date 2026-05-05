@@ -1,12 +1,19 @@
 ---
-/* TopBar.astro — gornja traka s novostima
-   Promijeni OVDJE → promjena na SVIM stranicama */
+import { getCollection } from 'astro:content';
+
+const sveVijesti = await getCollection('vijesti');
+const najnovije = sveVijesti
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 2);
 ---
 <div class="top-bar">
   <span class="top-bar-label">Novosti:</span>
-  <a href="/vijesti/2026-03-16-fei-world-cup-zagreb">FEI World Cup Zagreb — 11.-14. lipnja 2026.</a>
-  <span class="top-bar-sep">|</span>
-  <a href="/kalendar">2. kolo Nexe Zagrebačke lige i Batida Grand Prix</a>
+  {najnovije.map((v, i) => (
+    <>
+      {i > 0 && <span class="top-bar-sep">|</span>}
+      <a href={`/vijesti/${v.id}`}>{v.data.title}</a>
+    </>
+  ))}
 </div>
 
 <style>
