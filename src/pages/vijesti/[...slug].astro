@@ -9,7 +9,7 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const vijesti = await getCollection('vijesti');
   return vijesti.map(vijest => ({
-    params: { slug: vijest.id },
+    params: { slug: vijest.id.replace(/\.md$/, '') },
     props: { vijest },
   }));
 }

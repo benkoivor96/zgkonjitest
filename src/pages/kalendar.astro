@@ -28,8 +28,8 @@ interface RawEvent {
 }
 
 const sviRaw: RawEvent[] = [
-  ...kalendarEntries.map(e => ({ id: e.id, link: `/kalendar/${e.id}`, data: e.data as RawEvent['data'] })),
-  ...vijestiKaoDogadaji.map(e => ({ id: e.id, link: `/vijesti/${e.id}`, data: e.data as RawEvent['data'] })),
+  ...kalendarEntries.map(e => ({ id: e.id, link: `/kalendar/${e.id.replace(/\.md$/, '')}`, data: e.data as RawEvent['data'] })),
+  ...vijestiKaoDogadaji.map(e => ({ id: e.id, link: `/vijesti/${e.id.replace(/\.md$/, '')}`, data: e.data as RawEvent['data'] })),
 ];
 
 const wydarzenia = sviRaw

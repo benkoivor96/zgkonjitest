@@ -11,7 +11,7 @@ const najnovije = sveVijesti
   {najnovije.map((v, i) => (
     <>
       {i > 0 && <span class="top-bar-sep">|</span>}
-      <a href={`/vijesti/${v.id}`}>{v.data.title}</a>
+      <a href={`/vijesti/${v.id.replace(/\.md$/, '')}`}>{v.data.title}</a>
     </>
   ))}
 </div>

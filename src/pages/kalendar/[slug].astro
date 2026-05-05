@@ -5,7 +5,7 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   const dogadaji = await getCollection('kalendar');
   return dogadaji.map(ev => ({
-    params: { slug: ev.id },
+    params: { slug: ev.id.replace(/\.md$/, '') },
     props: { ev },
   }));
 }

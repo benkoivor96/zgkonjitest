@@ -78,7 +78,7 @@ function disciplineLabel(disc?: string): string {
       </div>
       <div class="vijesti-grid">
         {vijesti.map((vijest, i) => (
-          <a class={`vijesti-card ${i === 0 ? 'vijesti-card-featured' : ''} reveal ${i === 1 ? 'reveal-d1' : ''} ${i === 2 ? 'reveal-d2' : ''}`} href={`/vijesti/${vijest.id}`}>
+          <a class={`vijesti-card ${i === 0 ? 'vijesti-card-featured' : ''} reveal ${i === 1 ? 'reveal-d1' : ''} ${i === 2 ? 'reveal-d2' : ''}`} href={`/vijesti/${vijest.id.replace(/\.md$/, '')}`}>
             {vijest.data.image && (
               <div class="vijesti-card-img">
                 <img src={vijest.data.image} alt={vijest.data.title}>
