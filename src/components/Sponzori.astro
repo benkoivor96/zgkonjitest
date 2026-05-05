@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+
+const svi = await getCollection('sponzori');
+const sponzori = svi.sort((a, b) => (a.data.redoslijed ?? 99) - (b.data.redoslijed ?? 99));
+---
+
+{sponzori.length > 0 && (
+  <section class="sponzori-bar">
+    <div class="sponzori-inner">
+      <span class="sponzori-label">Sponzori</span>
+      <div class="sponzori-list">
+        {sponzori.map(s => (
+          s.data.url
+            ? <a href={s.data.url} target="_blank" rel="noopener" class="sponzor">
+                {s.data.logo
+                  ? <img src={s.data.logo} alt={s.data.naziv} />
+                  : <span class="sponzor-naziv">{s.data.naziv}</span>
+                }
+              </a>
+            : <div class="sponzor">
+                {s.data.logo
+                  ? <img src={s.data.logo} alt={s.data.naziv} />
+                  : <span class="sponzor-naziv">{s.data.naziv}</span>
+                }
+              </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .sponzori-bar {
+    background: var(--gray-50, #f8f9fa);
+    border-top: 1px solid var(--gray-200);
+    padding: 1.25rem 2rem;
+  }
+  .sponzori-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .sponzori-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    white-space: nowrap;
+  }
+  .sponzori-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .sponzor {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .sponzor:hover { opacity: 0.7; }
+  .sponzor img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(1);
+    transition: filter 0.2s;
+  }
+  .sponzor:hover img { filter: grayscale(0); }
+  .sponzor-naziv {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gray-600);
+    letter-spacing: 0.03em;
+  }
+</style>

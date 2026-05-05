@@ -30,6 +30,16 @@ const kalendar = defineCollection({
   }),
 });
 
+const sponzori = defineCollection({
+  type: 'content',
+  schema: z.object({
+    naziv: z.string(),
+    logo: z.string().optional(),
+    url: z.string().optional(),
+    redoslijed: z.number().optional(),
+  }),
+});
+
 const rezultati = defineCollection({
   type: 'content',
   schema: z.object({
@@ -41,4 +51,4 @@ const rezultati = defineCollection({
   }),
 });
 
-export const collections = { vijesti, kalendar, rezultati };
+export const collections = { vijesti, kalendar, rezultati, sponzori };

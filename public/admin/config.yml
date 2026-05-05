@@ -99,6 +99,22 @@ collections:
 
       - { label: "Sadržaj", name: "body", widget: "markdown" }
 
+  # ─── SPONZORI ───
+  # Popis sponzora prikazuje se iznad footera na svim stranicama.
+  # Dodaj logo (nije obavezno) i URL. Poredaj redoslijedom prikaza.
+  - name: "sponzori"
+    label: "Sponzori"
+    label_singular: "Sponzor"
+    folder: "src/content/sponzori"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Naziv sponzora", name: "naziv", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image", required: false, hint: "Preporučena visina: 80–120px, prozirna pozadina (PNG)" }
+      - { label: "Web stranica", name: "url", widget: "string", required: false }
+      - { label: "Redoslijed prikaza", name: "redoslijed", widget: "number", value_type: "int", default: 10, hint: "Manji broj = prikazuje se ranije (1, 2, 3...)" }
+      - { label: "Napomena", name: "body", widget: "markdown", required: false }
+
   # ─── REZULTATI NATJECANJA ───
   # Rezultati za Prvenstvo Zagreba, Zagreb Open i Zagrebačku konjičku ligu.
   # Svaki unos = jedna godina jednog natjecanja, s opcionalnim PDF-om.

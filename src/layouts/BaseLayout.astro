@@ -18,6 +18,7 @@ import TopBar from '../components/TopBar.astro';
 import Header from '../components/Header.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Sponzori from '../components/Sponzori.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 import '../styles/global.css';
 
@@ -44,6 +45,7 @@ const { title, activePage = '' } = Astro.props;
   <!-- Svaka stranica ubacuje svoj sadržaj ovdje -->
   <slot />
 
+  <Sponzori />
   <Footer />
   <ScrollReveal />
 </body>
