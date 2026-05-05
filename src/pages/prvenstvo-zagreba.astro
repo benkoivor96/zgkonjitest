@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const sviRezultati = await getCollection('rezultati');
+
+const tabs = [
+  { key: 'prvenstvoZagreba', label: 'Prvenstvo Zagreba' },
+  { key: 'zagrebOpen',       label: 'Zagreb Open' },
+  { key: 'konjickaLiga',     label: 'Zagrebačka konjička liga' },
+];
+
+// Group results by natjecanje, sorted by year desc
+const byTab = Object.fromEntries(
+  tabs.map(t => [
+    t.key,
+    sviRezultati
+      .filter(r => r.data.natjecanje === t.key)
+      .sort((a, b) => b.data.godina - a.data.godina),
+  ])
+);
+---
+<BaseLayout title="Prvenstvo Zagreba" activePage="/prvenstvo-zagreba">
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Prvenstvo Zagreba</span>
+      </div>
+      <h1>Prvenstvo Zagreba</h1>
+    </div>
+  </section>
+
+  <section class="pz-section">
+    <div class="pz-inner">
+
+      <!-- TABS -->
+      <div class="pz-tabs" role="tablist">
+        {tabs.map((t, i) => (
+          <button
+            class={`pz-tab${i === 0 ? ' active' : ''}`}
+            role="tab"
+            data-tab={t.key}
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <!-- TAB PANELS -->
+      {tabs.map((t, i) => (
+        <div
+          class={`pz-panel${i === 0 ? ' active' : ''}`}
+          role="tabpanel"
+          data-panel={t.key}
+        >
+          {byTab[t.key].length === 0 ? (
+            <div class="pz-empty">
+              <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <p>Rezultati još nisu objavljeni.</p>
+            </div>
+          ) : (
+            <ul class="pz-list">
+              {byTab[t.key].map(r => (
+                <li class="pz-item">
+                  <div class="pz-item-left">
+                    <span class="pz-godina">{r.data.godina}.</span>
+                    <span class="pz-title">{r.data.title}</span>
+                    {r.data.opis && <span class="pz-opis">{r.data.opis}</span>}
+                  </div>
+                  {r.data.datoteka && (
+                    <a href={r.data.datoteka} target="_blank" rel="noopener" class="pz-download">
+                      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a1 1 0 001 1h16a1 1 0 001-1v-3"/>
+                      </svg>
+                      Preuzmi PDF
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .pz-section { padding: 3rem 2rem 5rem; background: var(--white); }
+  .pz-inner { max-width: 860px; margin: 0 auto; }
+
+  /* Tabs */
+  .pz-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--gray-200); margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .pz-tab {
+    background: none; border: none; cursor: pointer;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--gray-500);
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .pz-tab:hover { color: var(--blue); }
+  .pz-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  /* Panels */
+  .pz-panel { display: none; }
+  .pz-panel.active { display: block; }
+
+  /* Empty state */
+  .pz-empty { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem 2rem; color: var(--gray-400); text-align: center; }
+  .pz-empty p { font-size: 0.95rem; }
+
+  /* Results list */
+  .pz-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .pz-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.15s;
+  }
+  .pz-item:first-child { border-top: 1px solid var(--gray-100); }
+  .pz-item:hover { background: var(--blue-pale); }
+  .pz-item-left { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .pz-godina { font-size: 1.05rem; font-weight: 700; color: var(--blue); min-width: 3rem; }
+  .pz-title { font-size: 0.95rem; font-weight: 600; color: var(--gray-800); }
+  .pz-opis { font-size: 0.85rem; color: var(--gray-500); }
+  .pz-download {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; font-weight: 600; color: var(--blue);
+    text-decoration: none; white-space: nowrap;
+    padding: 0.4rem 0.9rem; border: 1.5px solid var(--blue);
+    border-radius: 4px; transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+  .pz-download:hover { background: var(--blue); color: white; }
+
+  @media (max-width: 600px) {
+    .pz-tab { padding: 0.75rem 1rem; font-size: 0.8rem; }
+    .pz-item { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.pz-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.tab!;
+      document.querySelectorAll('.pz-tab').forEach(t => { t.classList.remove('active'); (t as HTMLElement).setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.pz-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.querySelector(`.pz-panel[data-panel="${key}"]`)?.classList.add('active');
+    });
+  });
+</script>

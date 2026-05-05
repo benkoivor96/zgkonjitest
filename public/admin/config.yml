@@ -99,6 +99,30 @@ collections:
 
       - { label: "Sadržaj", name: "body", widget: "markdown" }
 
+  # ─── REZULTATI NATJECANJA ───
+  # Rezultati za Prvenstvo Zagreba, Zagreb Open i Zagrebačku konjičku ligu.
+  # Svaki unos = jedna godina jednog natjecanja, s opcionalnim PDF-om.
+  - name: "rezultati"
+    label: "Rezultati natjecanja"
+    label_singular: "Rezultat"
+    folder: "src/content/rezultati"
+    create: true
+    slug: "{{natjecanje}}-{{godina}}"
+    sort: "godina:desc"
+    fields:
+      - label: "Natjecanje"
+        name: "natjecanje"
+        widget: "select"
+        options:
+          - { label: "Prvenstvo Zagreba", value: "prvenstvoZagreba" }
+          - { label: "Zagreb Open", value: "zagrebOpen" }
+          - { label: "Zagrebačka konjička liga", value: "konjickaLiga" }
+      - { label: "Godina", name: "godina", widget: "number", value_type: "int", min: 1990 }
+      - { label: "Naslov (npr. Rezultati 2025)", name: "title", widget: "string" }
+      - { label: "Kratki opis", name: "opis", widget: "string", required: false }
+      - { label: "PDF s rezultatima", name: "datoteka", widget: "file", required: false, hint: "Uploadaj PDF ili upiši URL" }
+      - { label: "Dodatni sadržaj", name: "body", widget: "markdown", required: false }
+
   # ─── DOKUMENTI ───
   # Klijent može dodavati PDF-ove i dokumente
   - name: "dokumenti"

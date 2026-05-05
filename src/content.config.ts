@@ -30,4 +30,15 @@ const kalendar = defineCollection({
   }),
 });
 
-export const collections = { vijesti, kalendar };
+const rezultati = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    natjecanje: z.enum(['prvenstvoZagreba', 'zagrebOpen', 'konjickaLiga']),
+    godina: z.number(),
+    datoteka: z.string().optional(),
+    opis: z.string().optional(),
+  }),
+});
+
+export const collections = { vijesti, kalendar, rezultati };
