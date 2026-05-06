@@ -1,2 +1,3 @@
-# Nema aktivnih redirect pravila.
-# Vijesti su na root URL-u (/slug), isti kao stari WordPress.
+# 301 redirecti
+/prvenstvo-zagreba/    /natjecanja    301
+/prvenstvo-zagreba     /natjecanja    301

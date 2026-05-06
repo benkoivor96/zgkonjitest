@@ -10,11 +10,8 @@ const { activePage = '' } = Astro.props;
 const links = [
   { href: '/kalendar', label: 'Kalendar' },
   { href: '/skole-jahanja', label: 'Škole jahanja' },
-  { href: '/prvenstvo-zagreba', label: 'Prvenstvo Zagreba' },
+  { href: '/natjecanja', label: 'Natjecanja' },
   { href: '/lipanjski-turnir', label: 'Lipanjski turnir' },
-  { href: '/clanovi-saveza', label: 'Članovi saveza' },
-  { href: '/dokumenti', label: 'Dokumenti' },
-  { href: '/o-nama', label: 'O nama' },
 ];
 
 const disciplines = [
@@ -24,7 +21,14 @@ const disciplines = [
   { href: '/daljinsko-jahanje', label: 'Daljinsko jahanje' },
 ];
 
+const oSavezu = [
+  { href: '/o-nama', label: 'O nama' },
+  { href: '/clanovi-saveza', label: 'Članovi saveza' },
+  { href: '/dokumenti', label: 'Dokumenti' },
+];
+
 const isKonjickiSport = activePage === '/konjicki-sport';
+const isOSavezu = ['/o-nama', '/clanovi-saveza', '/dokumenti'].includes(activePage);
 ---
 <nav>
   <div class="nav-inner">
@@ -51,6 +55,18 @@ const isKonjickiSport = activePage === '/konjicki-sport';
           </a>
         </li>
       ))}
+      <!-- DROPDOWN: O savezu -->
+      <li class="has-dropdown">
+        <a href="/o-nama" class={isOSavezu ? 'active' : ''}>
+          O savezu
+          <svg class="dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <ul class="dropdown">
+          {oSavezu.map(d => (
+            <li><a href={d.href}>{d.label}</a></li>
+          ))}
+        </ul>
+      </li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Izbornik">
       <span></span><span></span><span></span>
@@ -67,6 +83,10 @@ const isKonjickiSport = activePage === '/konjicki-sport';
   ))}
   {links.map(link => (
     <a href={link.href}>{link.label}</a>
+  ))}
+  <div class="mobile-section-label">O savezu</div>
+  {oSavezu.map(d => (
+    <a href={d.href} class="mobile-sub">{d.label}</a>
   ))}
 </div>
 
