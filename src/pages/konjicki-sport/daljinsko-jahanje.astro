@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Daljinsko jahanje" activePage="/konjicki-sport">
+
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-breadcrumb">
+        <a href="/">Naslovnica</a>
+        <span class="sep">›</span>
+        <a href="/konjicki-sport">Konjički sport</a>
+        <span class="sep">›</span>
+        <span style="color:rgba(255,255,255,0.8);">Daljinsko jahanje</span>
+      </div>
+      <h1>Daljinsko jahanje</h1>
+      <p>Najbrže rastuća FEI disciplina — izdržljivost, strategija i duboka veza jahača i konja na dugim stazama.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="discipline-block reveal">
+      <div class="discipline-img">
+        <img src="/images/daljinsko.jpg" alt="Daljinsko jahanje">
+        <span class="discipline-img-badge">Najbrže rastuća disciplina</span>
+      </div>
+      <div class="discipline-text">
+        <div class="discipline-number">03</div>
+        <h2>Daljinsko jahanje</h2>
+        <p>Daljinsko jahanje (endurance) je natjecanje kojim se provjerava brzina i izdržljivost konja, te jahačevo dobro poznavanje konja i terena, očitovano učinkovitim zadavanjem tempa. Iako se jahačima mjeri vrijeme, naglasak je na okončanju natjecanja u dobroj fizičkoj kondiciji konja, a ne na najbržem prolazu.</p>
+        <p>Endurance je pravi test jahačkih vještina koji je započeo iz nužde. Kako je jahanje stoljećima bilo glavni način transporta, pouzdani konji koji su mogli putovati velike udaljenosti i ostati u dobroj fizičkoj kondiciji bili su vrlo traženi.</p>
+        <p>Postavši FEI disciplina 1982. godine, endurance je danas najbrže rastuća konjička disciplina na svijetu.</p>
+        <div class="discipline-features">
+          <span class="discipline-feature"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Izdržljivost</span>
+          <span class="discipline-feature"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Strategija</span>
+          <span class="discipline-feature"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Dobrobit konja</span>
+          <span class="discipline-feature"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>FEI disciplina od 1982.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rules-section section">
+    <div class="rules-inner reveal">
+      <h2>Pravila natjecanja</h2>
+      <p>Suvremena natjecanja sastoje se od određenog broja faza. Na kraju svake faze, u principu najmanje svakih 40 km, obavezna je stanka za veterinarski pregled. Jahači imaju slobodu odabrati tempo od starta do cilja natjecanja, a konje mogu voditi ili slijediti — no moraju biti na konju kada prolaze startnu i ciljnu liniju.</p>
+      <p>Svaki konj koji je temeljito pregledan prije nego što mu je dopušteno da započne natjecanje mora proći kontrolu u određenom vremenu od dolaska do svake kontrolne točke. Cilj pregleda je utvrđivanje spremnosti konja za nastavak natjecanja.</p>
+      <h3>Udaljenosti po kategorijama natjecanja</h3>
+      <ul>
+        <li><strong>Jednodnevna natjecanja:</strong> 40–160 km</li>
+        <li><strong>FEI 1* (višednevna):</strong> 40–79 km po danu</li>
+        <li><strong>FEI 2* (višednevna):</strong> 80–119 km po danu</li>
+        <li><strong>FEI 3* (višednevna):</strong> 120+ km po danu</li>
+        <li><strong>FEI 4* jednodnevna prvenstva:</strong> 160 km (pobjedničko vrijeme ~10–12 sati)</li>
+      </ul>
+      <p class="fei-credit"><em>Tekst je preuzet i preveden sa službenih web stranica FEI.</em></p>
+    </div>
+  </section>
+
+  <section class="nav-disciplines section">
+    <div class="nav-disciplines-inner reveal">
+      <h3>Ostale discipline</h3>
+      <div class="other-disciplines">
+        <a href="/konjicki-sport/preponsko-jahanje" class="other-card">
+          <div class="other-card-bg" style="background-image:url('/images/preponsko.jpg')"></div>
+          <div class="other-card-overlay"></div>
+          <span>Preponsko jahanje</span>
+        </a>
+        <a href="/konjicki-sport/dresurno-jahanje" class="other-card">
+          <div class="other-card-bg" style="background-image:url('/images/dresurno.jpg')"></div>
+          <div class="other-card-overlay"></div>
+          <span>Dresurno jahanje</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .discipline-block { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .discipline-img { border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; position: relative; }
+  .discipline-img img { width: 100%; height: 100%; object-fit: cover; }
+  .discipline-img-badge { position: absolute; top: 1rem; left: 1rem; background: var(--blue); color: #fff; padding: 0.35rem 0.8rem; border-radius: 3px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .discipline-number { font-family: var(--serif); font-size: 3.5rem; font-weight: 700; color: var(--blue-pale); line-height: 1; margin-bottom: 0.5rem; }
+  .discipline-text h2 { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; color: var(--gray-800); margin-bottom: 1rem; }
+  .discipline-text p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.75; margin-bottom: 1.2rem; }
+  .discipline-features { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .discipline-feature { display: inline-flex; align-items: center; gap: 0.35rem; background: var(--blue-pale); color: var(--blue); padding: 0.3rem 0.7rem; border-radius: 3px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .discipline-feature svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+  .rules-section { background: var(--off-white); }
+  .rules-inner { max-width: 800px; margin: 0 auto; }
+  .rules-inner h2 { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--gray-800); margin-bottom: 1rem; }
+  .rules-inner h3 { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin: 1.5rem 0 0.6rem; }
+  .rules-inner p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.75; margin-bottom: 1rem; }
+  .rules-inner ul { padding-left: 1.5rem; color: var(--gray-600); font-size: 0.95rem; line-height: 2; }
+  .fei-credit { color: var(--gray-400) !important; font-size: 0.85rem !important; }
+
+  .nav-disciplines { background: var(--white); }
+  .nav-disciplines-inner { max-width: 1200px; margin: 0 auto; }
+  .nav-disciplines-inner h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--gray-800); margin-bottom: 1.5rem; }
+  .other-disciplines { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .other-card { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 16/7; text-decoration: none; display: block; }
+  .other-card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.5s; }
+  .other-card:hover .other-card-bg { transform: scale(1.05); }
+  .other-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(27,58,107,0.85) 0%, rgba(27,58,107,0.3) 100%); }
+  .other-card span { position: absolute; bottom: 1.2rem; left: 1.5rem; color: #fff; font-family: var(--serif); font-size: 1.1rem; font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .discipline-block { grid-template-columns: 1fr; gap: 2rem; }
+    .other-disciplines { grid-template-columns: 1fr; }
+  }
+</style>

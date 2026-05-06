@@ -8,7 +8,6 @@ interface Props {
 const { activePage = '' } = Astro.props;
 
 const links = [
-  { href: '/konjicki-sport', label: 'Konjički sport' },
   { href: '/kalendar', label: 'Kalendar' },
   { href: '/skole-jahanja', label: 'Škole jahanja' },
   { href: '/prvenstvo-zagreba', label: 'Prvenstvo Zagreba' },
@@ -17,6 +16,15 @@ const links = [
   { href: '/dokumenti', label: 'Dokumenti' },
   { href: '/o-nama', label: 'O nama' },
 ];
+
+const disciplines = [
+  { href: '/konjicki-sport', label: 'Pregled' },
+  { href: '/konjicki-sport/preponsko-jahanje', label: 'Preponsko jahanje' },
+  { href: '/konjicki-sport/dresurno-jahanje', label: 'Dresurno jahanje' },
+  { href: '/konjicki-sport/daljinsko-jahanje', label: 'Daljinsko jahanje' },
+];
+
+const isKonjickiSport = activePage === '/konjicki-sport';
 ---
 <nav>
   <div class="nav-inner">
@@ -24,6 +32,18 @@ const links = [
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
     </a>
     <ul class="nav-links">
+      <!-- DROPDOWN: Konjički sport -->
+      <li class="has-dropdown">
+        <a href="/konjicki-sport" class={isKonjickiSport ? 'active' : ''}>
+          Konjički sport
+          <svg class="dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <ul class="dropdown">
+          {disciplines.map(d => (
+            <li><a href={d.href}>{d.label}</a></li>
+          ))}
+        </ul>
+      </li>
       {links.map(link => (
         <li>
           <a href={link.href} class={activePage === link.href ? 'active' : ''}>
@@ -41,6 +61,10 @@ const links = [
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">&times;</button>
+  <div class="mobile-section-label">Konjički sport</div>
+  {disciplines.map(d => (
+    <a href={d.href} class="mobile-sub">{d.label}</a>
+  ))}
   {links.map(link => (
     <a href={link.href}>{link.label}</a>
   ))}
@@ -53,14 +77,24 @@ const links = [
   .nav-home:hover { background: rgba(255,255,255,0.1); }
   .nav-home svg { width: 18px; height: 18px; }
   .nav-links { display: flex; list-style: none; flex-wrap: wrap; justify-content: center; }
-  .nav-links a { display: block; padding: 0.85rem 1.1rem; color: rgba(255,255,255,0.92); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.2s; white-space: nowrap; }
+  .nav-links { position: relative; }
+  .nav-links > li { position: relative; }
+  .nav-links a { display: flex; align-items: center; gap: 0.3rem; padding: 0.85rem 1.1rem; color: rgba(255,255,255,0.92); text-decoration: none; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; transition: background 0.2s; white-space: nowrap; }
   .nav-links a:hover { background: rgba(255,255,255,0.12); color: #fff; }
   .nav-links a.active { background: rgba(255,255,255,0.15); color: #fff; }
+  .dropdown-arrow { width: 11px; height: 11px; flex-shrink: 0; transition: transform 0.2s; }
+  .has-dropdown:hover .dropdown-arrow { transform: rotate(180deg); }
+  .dropdown { display: none; position: absolute; top: 100%; left: 0; background: var(--blue-nav); min-width: 200px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); border-top: 2px solid rgba(255,255,255,0.15); list-style: none; z-index: 200; }
+  .has-dropdown:hover .dropdown { display: block; }
+  .dropdown li a { padding: 0.65rem 1.2rem; font-size: 0.75rem; letter-spacing: 0.04em; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .dropdown li:last-child a { border-bottom: none; }
   .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.8rem 1rem; }
   .hamburger span { display: block; width: 22px; height: 2px; background: white; margin: 4px 0; }
   .mobile-menu { display: none; position: fixed; inset: 0; background: var(--blue-nav); z-index: 200; flex-direction: column; padding: 5rem 2rem 2rem; overflow-y: auto; }
   .mobile-menu.open { display: flex; }
   .mobile-menu a { display: block; padding: 0.8rem 0; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 1.1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .mobile-menu a.mobile-sub { padding-left: 1rem; font-size: 0.95rem; color: rgba(255,255,255,0.7); }
+  .mobile-section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); padding: 0.8rem 0 0.3rem; }
   .mobile-close { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; }
 </style>
 
