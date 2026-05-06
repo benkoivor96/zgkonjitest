@@ -3,7 +3,7 @@ title: "Rezultati natjecanja u konjičkom višeboju (eventingu) — SKK SEM, 21.
 date: 2018-04-22
 image: "/images/uploads/eventing-skk-sem-2018.jpg"
 category: rezultati
-discipline: višeboj
+discipline: vise
 excerpt: "SKK SEM organizirao je natjecanje u konjičkom višeboju na Hipodromu Zagreb 21.–22. travnja 2018. Pobjednica je Lina Lauko iz Slovenije."
 ---
 

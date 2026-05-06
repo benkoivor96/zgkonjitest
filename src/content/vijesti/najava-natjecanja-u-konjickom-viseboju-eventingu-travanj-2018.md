@@ -3,7 +3,7 @@ title: "Najava natjecanja u konjičkom višeboju (eventingu) — travanj 2018."
 date: 2018-04-16
 image: "/images/uploads/eventing-staza-hipodrom.jpg"
 category: vijesti
-discipline: višeboj
+discipline: vise
 excerpt: "SKK SEM organizira natjecanje u konjičkom višeboju na Hipodromu Zagreb 21. i 22. travnja 2018."
 ---
 
