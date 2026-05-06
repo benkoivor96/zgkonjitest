@@ -35,6 +35,12 @@ const { title, activePage = '' } = Astro.props;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title} — Zagrebački konjički savez</title>
+  <link rel="canonical" href={`https://zgkonji.hr${Astro.url.pathname}`}>
+  <meta property="og:title" content={`${title} — Zagrebački konjički savez`}>
+  <meta property="og:url" content={`https://zgkonji.hr${Astro.url.pathname}`}>
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="hr_HR">
+  <meta property="og:site_name" content="Zagrebački konjički savez">
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>

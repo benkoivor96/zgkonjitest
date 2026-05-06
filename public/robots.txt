@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://zgkonji.hr/sitemap-index.xml
