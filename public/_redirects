@@ -1,6 +1,2 @@
-# 301 redirecti — stari WordPress URL-ovi → novi
-# Format: /stari-url  /novi-url  301
-
-# Vijesti koje su bile na /vijesti/ prefix sada su na root URL-u
-/vijesti/*  /:splat  301
-
+# Nema aktivnih redirect pravila.
+# Vijesti su na root URL-u (/slug), isti kao stari WordPress.
