@@ -3,7 +3,7 @@
   [...slug].astro — Pojedinačna vijest
   Automatski generira stranicu za svaku vijest iz CMS-a.
 */
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
