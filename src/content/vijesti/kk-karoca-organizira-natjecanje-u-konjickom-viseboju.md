@@ -3,7 +3,7 @@ title: "KK Karoca organizira natjecanje u konjičkom višeboju — listopad 2017
 date: 2017-10-02
 image: "/images/uploads/eventing-staza-hipodrom.jpg"
 category: vijesti
-discipline: višeboj
+discipline: vise
 excerpt: "Nakon dugogodišnjeg prekida, KK Karoca organizira prvo natjecanje u konjičkom višeboju (eventingu) u Zagrebu, 6.–8. listopada 2017."
 ---
 
