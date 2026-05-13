@@ -24,16 +24,30 @@ interface RawEvent {
     location: string;
     discipline: string;
     level?: string;
+    propozicije?: string;
   };
 }
 
 const sviRaw: RawEvent[] = [
   ...kalendarEntries.map(e => ({ id: e.id, link: `/kalendar/${e.id.replace(/\.md$/, '')}`, data: e.data as RawEvent['data'] })),
-  ...vijestiKaoDogadaji.map(e => ({ id: e.id, link: `/vijesti/${e.id.replace(/\.md$/, '')}`, data: e.data as RawEvent['data'] })),
+  ...vijestiKaoDogadaji.map(e => ({ id: e.id, link: `/${e.id.replace(/\.md$/, '')}`, data: e.data as RawEvent['data'] })),
 ];
 
-const wydarzenia = sviRaw
+// Sort: upcoming + ongoing first (ascending), past last (ascending)
+const _now = Date.now();
+const upcoming = sviRaw
+  .filter(e => {
+    const end = e.data.date_end ? new Date(e.data.date_end).getTime() : new Date(e.data.date_start).getTime();
+    return end >= _now;
+  })
   .sort((a, b) => new Date(a.data.date_start).getTime() - new Date(b.data.date_start).getTime());
+const past = sviRaw
+  .filter(e => {
+    const end = e.data.date_end ? new Date(e.data.date_end).getTime() : new Date(e.data.date_start).getTime();
+    return end < _now;
+  })
+  .sort((a, b) => new Date(b.data.date_start).getTime() - new Date(a.data.date_start).getTime());
+const wydarzenia = [...upcoming, ...past];
 
 const monthNames = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
 
@@ -77,6 +91,7 @@ interface ProcessedEvent {
   levelLabel: string;
   dateRange: string;
   location: string;
+  propozicije?: string;
   cardClass: string;
   isOngoing: boolean;
 }
@@ -110,6 +125,7 @@ const processedEvents: ProcessedEvent[] = wydarzenia.map(ev => {
     levelLabel: ev.data.level ? (levelLabels[ev.data.level] || '') : '',
     dateRange: formatDateRange(start, end),
     location: ev.data.location,
+    propozicije: ev.data.propozicije,
     cardClass,
     isOngoing,
   };
@@ -174,6 +190,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
                     <span class={`kalendar-tag disc-${ev.discipline}`}>{ev.disciplineLabel}</span>
                     {ev.level && <span class="kalendar-tag level">{ev.levelLabel}</span>}
                     {ev.isOngoing && <span class="kalendar-tag ongoing-tag">U tijeku</span>}
+                    {ev.propozicije && <span class="kalendar-tag pdf-tag">Propozicije PDF</span>}
                   </div>
                   <h3>{ev.title}</h3>
                   <div class="kalendar-card-info">
@@ -257,6 +274,7 @@ for (let i = 0; i < wydarzenia.length; i++) {
   .disc-vise { background: var(--blue-pale); color: var(--blue); }
   .kalendar-tag.level { background: var(--gray-100); color: var(--gray-600); }
   .kalendar-tag.ongoing-tag { background: #c8e6c9; color: #1b5e20; }
+  .kalendar-tag.pdf-tag { background: #fff3e0; color: #bf360c; }
 
   .kalendar-card h3 {
     font-family: var(--serif); font-size: 1.05rem; font-weight: 700;

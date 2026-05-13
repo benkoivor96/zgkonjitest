@@ -10,6 +10,7 @@ date_start: 2026-06-11
 date_end: 2026-06-14
 location: "Hipodrom Zagreb"
 level: medunarodno
+propozicije: /docs/Zagreb-CSIAm-A-11-06-26-14-06-26.pdf
 ---
 
 ## TRADICIJA KOJA TRAJE VIŠE OD SEDAM DESETLJEĆA

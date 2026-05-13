@@ -15,6 +15,7 @@ const vijesti = defineCollection({
     date_end: z.coerce.date().optional(),
     location: z.string().optional(),
     level: z.enum(['medunarodno', 'drzavno', 'regionalno']).optional(),
+    propozicije: z.string().optional(),
   }),
 });
 
@@ -27,6 +28,7 @@ const kalendar = defineCollection({
     location: z.string(),
     discipline: z.enum(['preponsko', 'dresurno', 'daljinsko', 'vise']),
     level: z.enum(['medunarodno', 'drzavno', 'regionalno']).optional(),
+    propozicije: z.string().optional(),
   }),
 });
 
