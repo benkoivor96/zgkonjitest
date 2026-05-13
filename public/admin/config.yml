@@ -6,7 +6,7 @@ backend:
   name: github
   repo: benkoivor96/zgkonjitest
   branch: main
-  base_url: https://zgkonji.hr
+  base_url: https://zgkonjitest.pages.dev
 
 # Gdje se uploadane slike spremaju
 media_folder: "public/images/uploads"
