@@ -1,0 +1,79 @@
+{
+  "$ref": "#/definitions/kalendar",
+  "definitions": {
+    "kalendar": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "date_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "location": {
+          "type": "string"
+        },
+        "discipline": {
+          "type": "string",
+          "enum": [
+            "preponsko",
+            "dresurno",
+            "daljinsko",
+            "vise"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "medunarodno",
+            "drzavno",
+            "regionalno"
+          ]
+        },
+        "propozicije": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "date_start",
+        "location",
+        "discipline"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

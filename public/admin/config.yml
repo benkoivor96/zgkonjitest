@@ -15,6 +15,11 @@ public_folder: "/images/uploads"
 # URL produkcijske stranice (za "View on site" gumb)
 site_url: https://zgkonji.hr
 
+# Slug uvijek ASCII (bez č, š, ž i sl.) — Cloudflare Pages ne podržava non-ASCII putanje
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
 # Hrvatski jezik za admin panel
 locale: "hr"
 

@@ -1,0 +1,113 @@
+{
+  "$ref": "#/definitions/vijesti",
+  "definitions": {
+    "vijesti": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "image": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "najave",
+            "vijesti",
+            "rezultati"
+          ]
+        },
+        "discipline": {
+          "type": "string",
+          "enum": [
+            "preponsko",
+            "dresurno",
+            "daljinsko",
+            "vise"
+          ]
+        },
+        "excerpt": {
+          "type": "string"
+        },
+        "je_dogadaj": {
+          "type": "boolean"
+        },
+        "date_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "date_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "location": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "medunarodno",
+            "drzavno",
+            "regionalno"
+          ]
+        },
+        "propozicije": {
+          "type": "string"
+        },
+        "draft": {
+          "type": "boolean"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "date"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

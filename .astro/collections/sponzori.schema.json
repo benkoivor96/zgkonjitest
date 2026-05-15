@@ -1,0 +1,30 @@
+{
+  "$ref": "#/definitions/sponzori",
+  "definitions": {
+    "sponzori": {
+      "type": "object",
+      "properties": {
+        "naziv": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "redoslijed": {
+          "type": "number"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "naziv"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

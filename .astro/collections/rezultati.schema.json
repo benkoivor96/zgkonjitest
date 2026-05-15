@@ -1,0 +1,40 @@
+{
+  "$ref": "#/definitions/rezultati",
+  "definitions": {
+    "rezultati": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "natjecanje": {
+          "type": "string",
+          "enum": [
+            "prvenstvoZagreba",
+            "zagrebOpen",
+            "konjickaLiga"
+          ]
+        },
+        "godina": {
+          "type": "number"
+        },
+        "datoteka": {
+          "type": "string"
+        },
+        "opis": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "natjecanje",
+        "godina"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
