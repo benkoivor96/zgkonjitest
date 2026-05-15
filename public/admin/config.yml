@@ -72,6 +72,7 @@ collections:
         name: "je_dogadaj"
         widget: "boolean"
         default: false
+        required: false
         hint: "Uključi ako objava opisuje natjecanje ili događaj — pojavit će se i u Kalendaru natjecanja."
 
       - label: "Datum početka događaja"
