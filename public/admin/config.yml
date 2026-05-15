@@ -12,6 +12,9 @@ backend:
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
+# URL produkcijske stranice (za "View on site" gumb)
+site_url: https://zgkonji.hr
+
 # Hrvatski jezik za admin panel
 locale: "hr"
 
@@ -33,8 +36,10 @@ collections:
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     sort: "date:desc"
+    preview_path: "{{slug}}"
     fields:
       - { label: "Naslov", name: "title", widget: "string" }
+      - { label: "Draft (skriveno od posjetitelja)", name: "draft", widget: "boolean", default: true, hint: "Uključeno = stranica postoji ali nije vidljiva u listama. Isključi kad je vijest gotova." }
       - { label: "Datum objave", name: "date", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
       - { label: "Naslovna slika", name: "image", widget: "image", required: false }
       - label: "Kategorija"

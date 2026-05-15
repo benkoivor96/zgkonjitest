@@ -16,6 +16,7 @@ const vijesti = defineCollection({
     location: z.string().optional(),
     level: z.enum(['medunarodno', 'drzavno', 'regionalno']).optional(),
     propozicije: z.string().optional(),
+    draft: z.boolean().optional(),
   }),
 });
 
