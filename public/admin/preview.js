@@ -8,7 +8,11 @@ var VijestPreview = createClass({
     var body = this.props.widgetFor('body');
     var imageRaw = entry.getIn(['data', 'image']);
     var imageAsset = imageRaw ? this.props.getAsset(imageRaw) : null;
-    var image = imageAsset ? imageAsset.toString() : null;
+    var imageUrl = imageAsset ? imageAsset.toString() : null;
+    // Ako je relativna putanja (committed slika), dodaj domain
+    var image = imageUrl
+      ? (imageUrl.startsWith('/') ? 'https://zgkonji.hr' + imageUrl : imageUrl)
+      : null;
     var dateRaw = entry.getIn(['data', 'date']);
     var category = entry.getIn(['data', 'category']);
     var discipline = entry.getIn(['data', 'discipline']);
