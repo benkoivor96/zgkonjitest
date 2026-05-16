@@ -250,7 +250,7 @@ function disciplineLabel(disc?: string): string {
   .vijesti-card-featured { grid-column: 1 / -1; flex-direction: row; }
   .vijesti-card-img { overflow: hidden; flex-shrink: 0; }
   .vijesti-card:not(.vijesti-card-featured) .vijesti-card-img { aspect-ratio: 16/9; }
-  .vijesti-card-featured .vijesti-card-img { width: 50%; min-height: 320px; }
+  .vijesti-card-featured .vijesti-card-img { width: 50%; min-height: 320px; max-height: 480px; }
   .vijesti-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
   .vijesti-card:hover .vijesti-card-img img { transform: scale(1.04); }
   .vijesti-card-body { padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; flex: 1; }
